@@ -1,0 +1,1272 @@
+</html><!DOCTYPE html>
+<html dir="rtl" lang="yi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>נאָטיץ מייסטער - פּראָפעסיאָנעלע נאָטיצן אַפּליקאציע</title>
+    <link href="https://fonts.googleapis.com/css2?family=David+Libre:wght@400;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #5e72e4;
+            --secondary-color: #6b7cf0;
+            --accent-color: #8899f8;
+            --success-color: #2dce89;
+            --danger-color: #f5365c;
+            --warning-color: #fb6340;
+            --info-color: #11cdef;
+            --background-color: #f8f9fe;
+            --sidebar-bg: #ffffff;
+            --text-color: #32325d;
+            --text-muted: #8898aa;
+            --border-color: #e9ecef;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+            --gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rubik', 'Noto Sans Hebrew', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            direction: rtl;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: block;
+        }
+        
+        .app-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background-color: var(--sidebar-bg);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: width 0.3s ease;
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .note-list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+        
+        .note-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .note-item {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .note-item:hover {
+            background-color: #f8f9fe;
+            transform: translateX(-5px);
+        }
+        
+        .note-item.active {
+            background: var(--gradient);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .note-item.active .note-date,
+        .note-item.active .note-preview {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .note-item-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .note-item-title {
+            font-weight: 500;
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .note-preview {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .note-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background: white;
+        }
+        
+        .editor-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: #fafbfc;
+        }
+        
+        .note-title {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .note-title:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+        
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background-color: #fafbfc;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+        
+        .toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .toolbar button {
+            padding: 0.5rem 0.75rem;
+            background-color: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--text-color);
+        }
+        
+        .toolbar button:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .toolbar button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .toolbar select {
+            padding: 0.5rem 0.75rem;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .toolbar select:hover,
+        .toolbar select:focus {
+            border-color: var(--primary-color);
+        }
+        
+        .toolbar input[type="color"] {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        
+        .toolbar input[type="color"]:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .toolbar-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+        }
+        
+        .divider {
+            width: 1px;
+            height: 30px;
+            background-color: var(--border-color);
+            margin: 0 0.5rem;
+        }
+        
+        .editor-container {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: white;
+        }
+        
+        #editor {
+            min-height: 400px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            outline: none;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        #editor:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: #fafbfc;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+        
+        .create-note {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .create-note:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+        
+        .toast.show {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateX(-50%) translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow-lg);
+            max-width: 500px;
+            width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+        
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .modal-body {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .toggle-sidebar {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 101;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                position: relative;
+            }
+            
+            .sidebar {
+                position: absolute;
+                top: 0;
+                right: -320px;
+                height: 100%;
+                z-index: 99;
+                box-shadow: var(--shadow-lg);
+                transition: right 0.3s ease;
+            }
+            
+            .sidebar.show {
+                right: 0;
+            }
+            
+            .toggle-sidebar {
+                display: block;
+            }
+            
+            .header-stats {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            #editor {
+                padding: 1rem;
+            }
+        }
+        
+        /* אנימאציעס */
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* סקראָלבאַר סטיילס */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* בילד סטיילס */
+        #editor img {
+            max-width: 100%;
+            height: auto;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            margin: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        #editor img:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        #editor img.selected {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.1);
+        }
+        
+        /* Icons */
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>
+                    <div class="logo">📝</div>
+                    נאָטיץ מייסטער
+                </h1>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalNotes">0</span>
+                        <span>נאָטיצן</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalWords">0</span>
+                        <span>ווערטער</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <button class="toggle-sidebar" id="toggleSidebar">☰</button>
+        
+        <div class="app-container">
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <button class="create-note" id="createNote">
+                        <span>➕</span>
+                        <span>נייַע נאָטיץ</span>
+                    </button>
+                    <input type="text" class="search-box" id="searchNotes" placeholder="🔍 זוך נאָטיצן...">
+                </div>
+                <div class="note-list-container">
+                    <ul class="note-list" id="noteList">
+                        <!-- Notes will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="main-content">
+                <div class="editor-header">
+                    <input type="text" class="note-title" id="noteTitle" placeholder="געב א נאמען פאר דיין נאָטיץ...">
+                </div>
+                
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <button id="boldBtn" title="פעט">𝐁</button>
+                        <button id="italicBtn" title="שיף">𝐼</button>
+                        <button id="underlineBtn" title="אונטערשטרייכן">U̲</button>
+                        <button id="strikeBtn" title="דורכשטרייכן">S̶</button>
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <button id="heading1Btn" title="קאפ 1">H1</button>
+                        <button id="heading2Btn" title="קאפ 2">H2</button>
+                        <button id="heading3Btn" title="קאפ 3">H3</button>
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <button id="bulletListBtn" title="פונקט ליסטע">•</button>
+                        <button id="numberListBtn" title="נומער ליסטע">1.</button>
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <button id="alignRightBtn" title="צו רעכטס">⫸</button>
+                        <button id="alignCenterBtn" title="צענטער">≡</button>
+                        <button id="alignLeftBtn" title="צו לינקס">⫷</button>
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">שריפט:</span>
+                        <select id="fontFamily">
+                            <option value="'Rubik', sans-serif">Rubik</option>
+                            <option value="'David Libre', serif">David Libre</option>
+                            <option value="'Noto Sans Hebrew', sans-serif">Noto Sans</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times</option>
+                        </select>
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <span class="toolbar-label">קאָליר:</span>
+                        <input type="color" id="textColor" value="#000000" title="טעקסט קאָליר">
+                        <input type="color" id="bgColor" value="#ffffff" title="הינטערגרונט קאָליר">
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <button id="insertImageBtn" title="לייג צו בילד">🖼️</button>
+                        <button id="insertLinkBtn" title="לייג צו לינק">🔗</button>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="toolbar-group">
+                        <button id="undoBtn" title="צוריק">↶</button>
+                        <button id="redoBtn" title="פאָרויס">↷</button>
+                    </div>
+                </div>
+                
+                <div class="editor-container">
+                    <div id="editor" contenteditable="true" data-placeholder="אנהייב שרייבן דיין נאָטיץ..."></div>
+                </div>
+                
+                <div class="button-container">
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="saveNote">
+                            <span>💾</span>
+                            <span>אויפֿהיטן</span>
+                        </button>
+                        <button class="btn btn-success" id="exportPdfBtn">
+                            <span>📄</span>
+                            <span>PDF</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-danger" id="deleteNote">
+                        <span>🗑️</span>
+                        <span>אויסמעקן</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- טאָוסט נאָטיפיקאציע -->
+    <div class="toast" id="toast"></div>
+    
+    <!-- מאָדאַל פאר באשטעטיגונג -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">באשטעטיג אויסמעקן</h3>
+            </div>
+            <div class="modal-body">
+                ביסטו זיכער אז דו ווילסט אויסמעקן די נאָטיץ? דאס קען מען נישט צוריקדרייען.
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeModal()">אַנולירן</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">יא, אויסמעקן</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize variables
+        let notes = JSON.parse(localStorage.getItem('notes')) || [];
+        let currentNoteId = null;
+        let autoSaveTimer = null;
+        let undoStack = [];
+        let redoStack = [];
+        
+        // DOM elements
+        const noteList = document.getElementById('noteList');
+        const noteTitle = document.getElementById('noteTitle');
+        const editor = document.getElementById('editor');
+        const createNoteBtn = document.getElementById('createNote');
+        const saveNoteBtn = document.getElementById('saveNote');
+        const deleteNoteBtn = document.getElementById('deleteNote');
+        const searchBox = document.getElementById('searchNotes');
+        const totalNotesEl = document.getElementById('totalNotes');
+        const totalWordsEl = document.getElementById('totalWords');
+        const toast = document.getElementById('toast');
+        const deleteModal = document.getElementById('deleteModal');
+        const toggleSidebarBtn = document.getElementById('toggleSidebar');
+        const sidebar = document.getElementById('sidebar');
+        
+        // Toolbar buttons
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const strikeBtn = document.getElementById('strikeBtn');
+        const heading1Btn = document.getElementById('heading1Btn');
+        const heading2Btn = document.getElementById('heading2Btn');
+        const heading3Btn = document.getElementById('heading3Btn');
+        const bulletListBtn = document.getElementById('bulletListBtn');
+        const numberListBtn = document.getElementById('numberListBtn');
+        const alignRightBtn = document.getElementById('alignRightBtn');
+        const alignCenterBtn = document.getElementById('alignCenterBtn');
+        const alignLeftBtn = document.getElementById('alignLeftBtn');
+        const fontFamilySelect = document.getElementById('fontFamily');
+        const textColorInput = document.getElementById('textColor');
+        const bgColorInput = document.getElementById('bgColor');
+        const insertImageBtn = document.getElementById('insertImageBtn');
+        const insertLinkBtn = document.getElementById('insertLinkBtn');
+        const imageInput = document.getElementById('imageInput');
+        const exportPdfBtn = document.getElementById('exportPdfBtn');
+        const undoBtn = document.getElementById('undoBtn');
+        const redoBtn = document.getElementById('redoBtn');
+        
+        // Helper functions
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        function openModal() {
+            deleteModal.classList.add('show');
+        }
+        
+        function closeModal() {
+            deleteModal.classList.remove('show');
+        }
+        
+        function updateStats() {
+            totalNotesEl.textContent = notes.length;
+            
+            let totalWords = 0;
+            notes.forEach(note => {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = note.content;
+                const text = tempDiv.textContent || tempDiv.innerText || '';
+                totalWords += text.split(/\s+/).filter(word => word.length > 0).length;
+            });
+            totalWordsEl.textContent = totalWords;
+        }
+        
+        function stripHtml(html) {
+            const tmp = document.createElement('div');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+        
+        function getPreview(content) {
+            const text = stripHtml(content);
+            return text.length > 50 ? text.substring(0, 50) + '...' : text;
+        }
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) return 'איצט';
+            if (diff < 3600000) return `פאר ${Math.floor(diff / 60000)} מינוט`;
+            if (diff < 86400000) return `פאר ${Math.floor(diff / 3600000)} שעה`;
+            if (diff < 604800000) return `פאר ${Math.floor(diff / 86400000)} טאג`;
+            
+            return date.toLocaleDateString('he-IL');
+        }
+        
+        // Note management functions
+        function renderNoteList(notesToRender = notes) {
+            noteList.innerHTML = '';
+            
+            if (notesToRender.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.className = 'empty-state';
+                emptyState.innerHTML = `
+                    <div class="empty-state-icon">📝</div>
+                    <h3>נאָך קיין נאָטיצן</h3>
+                    <p>דריק אויף "נייַע נאָטיץ" צו אָנהייבן</p>
+                `;
+noteList.appendChild(emptyState);
+                return;
+            }
+            
+            notesToRender.forEach(note => {
+                const noteItem = document.createElement('li');
+                noteItem.className = 'note-item fade-in';
+                if (note.id === currentNoteId) {
+                    noteItem.classList.add('active');
+                }
+                
+                const noteContent = document.createElement('div');
+                noteContent.className = 'note-item-content';
+                
+                const titleEl = document.createElement('div');
+                titleEl.className = 'note-item-title';
+                titleEl.textContent = note.title || 'אָן נאָמען';
+                
+                const previewEl = document.createElement('div');
+                previewEl.className = 'note-preview';
+                previewEl.textContent = getPreview(note.content);
+                
+                const dateEl = document.createElement('div');
+                dateEl.className = 'note-date';
+                dateEl.innerHTML = `<span>🕒</span> ${formatDate(note.updatedAt)}`;
+                
+                noteContent.appendChild(titleEl);
+                noteContent.appendChild(previewEl);
+                noteContent.appendChild(dateEl);
+                noteItem.appendChild(noteContent);
+                
+                noteItem.addEventListener('click', () => loadNote(note.id));
+                
+                noteList.appendChild(noteItem);
+            });
+            
+            updateStats();
+        }
+        
+        function createNewNote() {
+            const newNote = {
+                id: Date.now(),
+                title: '',
+                content: '',
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            };
+            
+            notes.unshift(newNote);
+            saveNotesToStorage();
+            currentNoteId = newNote.id;
+            loadNote(currentNoteId);
+            renderNoteList();
+            noteTitle.focus();
+            showToast('נייַע נאָטיץ געשאפן! ✨');
+        }
+        
+        function loadNote(noteId) {
+            const note = notes.find(n => n.id === noteId);
+            if (note) {
+                currentNoteId = noteId;
+                noteTitle.value = note.title;
+                editor.innerHTML = note.content;
+                renderNoteList();
+                
+                // Close sidebar on mobile after selecting note
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        }
+        
+        function saveCurrentNote() {
+            if (currentNoteId === null) {
+                createNewNote();
+                return;
+            }
+            
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            if (noteIndex !== -1) {
+                notes[noteIndex].title = noteTitle.value;
+                notes[noteIndex].content = editor.innerHTML;
+                notes[noteIndex].updatedAt = Date.now();
+                
+                const updatedNote = notes.splice(noteIndex, 1)[0];
+                notes.unshift(updatedNote);
+                
+                saveNotesToStorage();
+                renderNoteList();
+                showToast('נאָטיץ געהיט! ✅');
+            }
+        }
+        
+        function deleteCurrentNote() {
+            if (currentNoteId === null) return;
+            
+            notes = notes.filter(n => n.id !== currentNoteId);
+            saveNotesToStorage();
+            
+            if (notes.length > 0) {
+                currentNoteId = notes[0].id;
+                loadNote(currentNoteId);
+            } else {
+                currentNoteId = null;
+                noteTitle.value = '';
+                editor.innerHTML = '';
+            }
+            
+            renderNoteList();
+            closeModal();
+            showToast('נאָטיץ אויסגעמעקט! 🗑️');
+        }
+        
+        function confirmDelete() {
+            deleteCurrentNote();
+        }
+        
+        function searchNotes(query) {
+            if (!query.trim()) {
+                renderNoteList();
+                return;
+            }
+            
+            const lowerCaseQuery = query.toLowerCase();
+            const filteredNotes = notes.filter(note => 
+                note.title.toLowerCase().includes(lowerCaseQuery) || 
+                stripHtml(note.content).toLowerCase().includes(lowerCaseQuery)
+            );
+            
+            renderNoteList(filteredNotes);
+        }
+        
+        function saveNotesToStorage() {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+        
+        // Auto-save functionality
+        function setupAutoSave() {
+            const autoSave = () => {
+                if (currentNoteId) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(() => {
+                        saveCurrentNote();
+                    }, 1000);
+                }
+            };
+            
+            noteTitle.addEventListener('input', autoSave);
+            editor.addEventListener('input', autoSave);
+        }
+        
+        // Text formatting functions
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            editor.focus();
+        }
+        
+        function insertHeading(level) {
+            const selection = window.getSelection();
+            const range = selection.getRangeAt(0);
+            const selectedText = range.toString();
+            
+            const heading = document.createElement(`h${level}`);
+            heading.textContent = selectedText || 'כאָפּצייל';
+            
+            range.deleteContents();
+            range.insertNode(heading);
+            
+            selection.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.selectNodeContents(heading);
+            selection.addRange(newRange);
+        }
+        
+        function insertLink() {
+            const url = prompt('שרייב אריין דעם לינק URL:');
+            if (url) {
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                const selectedText = range.toString() || url;
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.textContent = selectedText;
+                link.target = '_blank';
+                link.style.color = '#5e72e4';
+                
+                range.deleteContents();
+                range.insertNode(link);
+            }
+        }
+        
+        // Export to PDF functionality
+        function exportToPDF() {
+            const element = document.createElement('div');
+            element.style.padding = '20px';
+            element.style.fontFamily = 'Arial, sans-serif';
+            element.style.direction = 'rtl';
+            
+            const title = document.createElement('h1');
+            title.textContent = noteTitle.value || 'אָן נאָמען';
+            title.style.marginBottom = '20px';
+            
+            const content = document.createElement('div');
+            content.innerHTML = editor.innerHTML;
+            
+            element.appendChild(title);
+            element.appendChild(content);
+            
+            const opt = {
+                margin: 1,
+                filename: `${noteTitle.value || 'נאָטיץ'}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+            showToast('PDF דאַונלאָוד געשטאַרט! 📄');
+        }
+        
+        // Event Listeners
+        createNoteBtn.addEventListener('click', createNewNote);
+        saveNoteBtn.addEventListener('click', saveCurrentNote);
+        deleteNoteBtn.addEventListener('click', openModal);
+        searchBox.addEventListener('input', (e) => searchNotes(e.target.value));
+        exportPdfBtn.addEventListener('click', exportToPDF);
+        
+        // Toolbar event listeners
+        boldBtn.addEventListener('click', () => formatText('bold'));
+        italicBtn.addEventListener('click', () => formatText('italic'));
+        underlineBtn.addEventListener('click', () => formatText('underline'));
+        strikeBtn.addEventListener('click', () => formatText('strikeThrough'));
+        
+        heading1Btn.addEventListener('click', () => insertHeading(1));
+        heading2Btn.addEventListener('click', () => insertHeading(2));
+        heading3Btn.addEventListener('click', () => insertHeading(3));
+        
+        bulletListBtn.addEventListener('click', () => formatText('insertUnorderedList'));
+        numberListBtn.addEventListener('click', () => formatText('insertOrderedList'));
+        
+        alignRightBtn.addEventListener('click', () => formatText('justifyRight'));
+        alignCenterBtn.addEventListener('click', () => formatText('justifyCenter'));
+        alignLeftBtn.addEventListener('click', () => formatText('justifyLeft'));
+        
+        fontFamilySelect.addEventListener('change', () => {
+            formatText('fontName', fontFamilySelect.value);
+        });
+        
+        textColorInput.addEventListener('input', () => {
+            formatText('foreColor', textColorInput.value);
+        });
+        
+        bgColorInput.addEventListener('input', () => {
+            formatText('hiliteColor', bgColorInput.value);
+        });
+        
+        insertLinkBtn.addEventListener('click', insertLink);
+        
+        // Image handling
+        insertImageBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+        
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = document.createElement('img');
+                    img.src = event.target.result;
+                    img.style.maxWidth = '100%';
+                    img.style.height = 'auto';
+                    img.style.margin = '10px 0';
+                    
+                    const selection = window.getSelection();
+                    if (selection.rangeCount > 0) {
+                        const range = selection.getRangeAt(0);
+                        range.deleteContents();
+                        range.insertNode(img);
+                    } else {
+                        editor.appendChild(img);
+                    }
+                    
+                    saveCurrentNote();
+                };
+                reader.readAsDataURL(file);
+                e.target.value = '';
+            }
+        });
+        
+        // Undo/Redo functionality
+        undoBtn.addEventListener('click', () => {
+            document.execCommand('undo');
+        });
+        
+        redoBtn.addEventListener('click', () => {
+            document.execCommand('redo');
+        });
+        
+        // Mobile sidebar toggle
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(e.target) && 
+                !toggleSidebarBtn.contains(e.target) &&
+                sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case 's':
+                        e.preventDefault();
+                        saveCurrentNote();
+                        break;
+                    case 'n':
+                        e.preventDefault();
+                        createNewNote();
+                        break;
+                    case 'b':
+                        e.preventDefault();
+                        formatText('bold');
+                        break;
+                    case 'i':
+                        e.preventDefault();
+                        formatText('italic');
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        formatText('underline');
+                        break;
+                }
+            }
+        });
+        
+        // Initialize the app
+        window.addEventListener('DOMContentLoaded', () => {
+            setupAutoSave();
+            
+            if (notes.length > 0) {
+                currentNoteId = notes[0].id;
+                loadNote(currentNoteId);
+            } else {
+                createNewNote();
+            }
+            
+            renderNoteList();
+            
+            // Add placeholder styles
+            const style = document.createElement('style');
+            style.innerHTML = `
+                [contenteditable=true]:empty:before {
+                    content: attr(data-placeholder);
+                    color: #aaa;
+                    font-style: italic;
+                    pointer-events: none;
+                }
+                
+                [contenteditable=true]:focus {
+                    outline: none;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+        
+        // Prevent data loss on page unload
+        window.addEventListener('beforeunload', (e) => {
+            if (currentNoteId && editor.innerHTML !== '') {
+                saveCurrentNote();
+            }
+        });
+    </script>
+</body>
