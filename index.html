@@ -3,215 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>נאָטיץ פּראָ - פּראָפעסיאָנעלע נאָטיצן אַפּליקאציע</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=David+Libre:wght@400;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>פשוטע נאטיצן אפליקאציע</title>
+    <link href="https://fonts.googleapis.com/css2?family=David+Libre:wght@400;700&family=Noto+Sans+Hebrew:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --primary-light: #7c3aed;
-            --secondary: #48bb78;
-            --danger: #f56565;
-            --warning: #ed8936;
-            --info: #4299e1;
-            --dark: #2d3748;
-            --light: #f7fafc;
-            --gray: #718096;
-            --gray-light: #e2e8f0;
-            --gray-lighter: #edf2f7;
-            --white: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --radius: 0.5rem;
-            --radius-lg: 0.75rem;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        * {
-            box-sizing: border-box;
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cae;
+            --accent-color: #9cb3c9;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         body {
-            font-family: 'Rubik', 'Noto Sans Hebrew', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: var(--dark);
+            font-family: 'David Libre', 'Noto Sans Hebrew', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
             margin: 0;
             padding: 0;
             direction: rtl;
-            line-height: 1.6;
-            min-height: 100vh;
         }
         
-        .app-wrapper {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Header */
-        .header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: var(--shadow-md);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            padding: 1rem 2rem;
-        }
-        
-        .header-content {
-            max-width: 1400px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 20px;
         }
         
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .logo-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: var(--radius-lg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        header {
+            background-color: var(--primary-color);
             color: white;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .logo-text {
-            font-size: 1.75rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .header-stats {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .stat-item {
+            padding: 20px;
             text-align: center;
-            padding: 0.5rem 1rem;
-            background: var(--gray-lighter);
-            border-radius: var(--radius);
-            transition: var(--transition);
+            border-radius: 10px 10px 0 0;
+            box-shadow: var(--shadow);
         }
         
-        .stat-item:hover {
-            background: var(--gray-light);
-            transform: translateY(-2px);
-        }
-        
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .stat-label {
-            font-size: 0.875rem;
-            color: var(--gray);
-        }
-        
-        /* Main Container */
-        .main-container {
-            flex: 1;
-            max-width: 1400px;
-            margin: 2rem auto;
-            width: 100%;
-            padding: 0 2rem;
-            display: flex; 
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
         }
         
         .app-container {
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
             display: flex;
-            flex: 1; 
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
             overflow: hidden;
         }
         
-        /* Sidebar */
         .sidebar {
-            width: 320px;
-            background: var(--gray-lighter);
-            border-left: 1px solid var(--gray-light);
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-            flex-shrink: 0; 
-        }
-        
-        .sidebar-header {
-            padding: 1.5rem;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-light);
-        }
-        
-        .create-note-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            box-shadow: var(--shadow-md);
-        }
-        
-        .create-note-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .create-note-btn:active {
-            transform: translateY(0);
-        }
-        
-        .search-box {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            margin-top: 1rem;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            font-size: 0.95rem;
-            transition: var(--transition);
-            background: var(--white);
-        }
-        
-        .search-box:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .note-list-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-left: 1px solid #eee;
         }
         
         .note-list {
@@ -221,1002 +67,753 @@
         }
         
         .note-item {
-            background: var(--white);
-            border: 2px solid transparent;
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 0.75rem;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
             cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .note-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
+            transition: background-color 0.3s;
         }
         
         .note-item:hover {
-            border-color: var(--primary);
-            box-shadow: var(--shadow-md);
-            transform: translateX(-4px);
-        }
-        
-        .note-item:hover::before {
-            transform: scaleY(1);
+            background-color: #f0f4f8;
         }
         
         .note-item.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background-color: var(--accent-color);
             color: white;
-            border-color: var(--primary);
-            box-shadow: var(--shadow-md);
         }
         
-        .note-item.active .note-meta {
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .note-item-title {
-            font-weight: 500;
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        
-        .note-item-preview {
-            font-size: 0.875rem;
-            color: var(--gray);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-bottom: 0.5rem;
-        }
-        
-        .note-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.75rem;
-            color: var(--gray);
-        }
-        
-        /* Main Content */
         .main-content {
-            flex: 1;
+            flex-grow: 1;
+            background-color: white;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            background: var(--white);
-            overflow: hidden; 
         }
         
-        .editor-header {
-            padding: 1.5rem;
-            background: var(--gray-lighter);
-            border-bottom: 1px solid var(--gray-light);
-        }
-        
-        .note-title-input {
+        .note-title {
             width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1.5rem;
-            font-weight: 500;
-            border: 2px solid transparent;
-            border-radius: var(--radius);
-            background: var(--white);
-            transition: var(--transition);
-        }
-        
-        .note-title-input:focus {
+            padding: 10px;
+            font-size: 1.5em;
+            border: none;
+            border-bottom: 2px solid var(--accent-color);
+            margin-bottom: 10px;
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
-        /* Toolbar */
         .toolbar {
+            background-color: #f0f4f8;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 1rem;
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-light);
-            align-items: center;
+            gap: 5px;
+        }
+        
+        .toolbar button, .toolbar select {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .toolbar button:hover, .toolbar select:hover {
+            background-color: var(--accent-color);
+            color: white;
         }
         
         .toolbar-group {
             display: flex;
             align-items: center;
-            gap: 0.25rem;
-            padding: 0.25rem;
-            background: var(--gray-lighter);
-            border-radius: var(--radius);
+            gap: 5px;
+            margin-left: 10px;
         }
         
-        .toolbar-btn {
-            padding: 0.5rem;
-            background: transparent;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            color: var(--dark);
-        }
-        
-        .toolbar-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-1px);
-        }
-        
-        .toolbar-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .toolbar-select {
-            padding: 0.5rem;
-            background: var(--white);
-            border: 1px solid var(--gray-light);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            min-width: 120px;
-        }
-        
-        .toolbar-select:hover,
-        .toolbar-select:focus {
-            border-color: var(--primary);
-            outline: none;
-        }
-        
-        .color-input {
-            width: 36px;
-            height: 36px;
-            border: 2px solid var(--gray-light);
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            overflow: hidden;
-            padding: 2px;
-        }
-        
-        .color-input:hover {
-            border-color: var(--primary);
-        }
-        
-        .toolbar-divider {
+        .divider {
             width: 1px;
-            height: 36px;
-            background: var(--gray-light);
-            margin: 0 0.5rem;
+            height: 24px;
+            background-color: #ddd;
+            margin: 0 5px;
         }
         
-        /* Editor */
-        .editor-container {
-            flex: 1; 
-            padding: 1rem; 
-            overflow-y: hidden; 
-            background: var(--white);
-            display: flex; 
-            flex-direction: column;
+        .content-area {
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow-y: auto;
+            padding: 10px;
+            min-height: 400px;
         }
         
         #editor {
-            flex: 1; 
-            width: 100%; 
-            max-width: none; 
-            padding: 1.5rem; 
-            background: var(--white);
-            border: 1px solid var(--gray-light);
-            border-radius: var(--radius);
+            height: 100%;
             outline: none;
-            font-size: 1.125rem;
-            line-height: 1.8;
-            overflow-y: auto; 
-            transition: var(--transition);
         }
         
-        #editor:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        /* Image styles */
+        .img-left {
+            float: right; /* RTL, so right means left */
+            margin: 10px;
+            max-width: 40%;
         }
         
-        #editor:empty:before {
-            content: attr(data-placeholder);
-            color: var(--gray);
-            font-style: italic;
-            pointer-events: none;
+        .img-right {
+            float: left; /* RTL, so left means right */
+            margin: 10px;
+            max-width: 40%;
         }
         
-        /* Editor Styles */
-        #editor h1 { font-size: 2rem; font-weight: 700; margin: 1rem 0; color: var(--dark); }
-        #editor h2 { font-size: 1.5rem; font-weight: 600; margin: 1rem 0; color: var(--dark); }
-        #editor h3 { font-size: 1.25rem; font-weight: 500; margin: 1rem 0; color: var(--dark); }
-        #editor p { margin: 1rem 0; }
-        #editor blockquote { border-right: 4px solid var(--primary); padding-right: 1rem; margin: 1rem 0; color: var(--gray); font-style: italic; }
-        #editor ul, #editor ol { margin: 1rem 0; padding-right: 2rem; }
-        #editor li { margin: 0.5rem 0; }
-        #editor a { color: var(--primary); text-decoration: none; transition: var(--transition); }
-        #editor a:hover { text-decoration: underline; }
-        #editor img { max-width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow-md); margin: 1rem 0; cursor: pointer; transition: var(--transition); }
-        #editor img:hover { box-shadow: var(--shadow-lg); transform: scale(1.02); }
-        #editor img.img-left { float: right; margin: 0 0 1rem 1rem; max-width: 40%; }
-        #editor img.img-right { float: left; margin: 0 1rem 1rem 0; max-width: 40%; }
-        #editor img.img-center { display: block; margin: 1rem auto; max-width: 80%; }
+        .img-center {
+            display: block;
+            margin: 10px auto;
+            max-width: 80%;
+        }
         
-        /* Bottom Actions */
-        .bottom-actions { padding: 1.5rem; background: var(--gray-lighter); border-top: 1px solid var(--gray-light); display: flex; justify-content: space-between; align-items: center; }
-        .action-btn { padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 500; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 0.5rem; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; box-shadow: var(--shadow-md); }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-        .btn-secondary { background: var(--secondary); color: white; box-shadow: var(--shadow-md); }
-        .btn-secondary:hover { background: #38a169; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-        .btn-danger { background: var(--danger); color: white; box-shadow: var(--shadow-md); }
-        .btn-danger:hover { background: #e53e3e; transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-        .btn-group { display: flex; gap: 1rem; }
+        .img-inline {
+            display: inline-block;
+            margin: 10px;
+            max-width: 30%;
+            vertical-align: middle;
+        }
         
-        /* Toast Notification */
-        .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--dark); color: white; padding: 1rem 2rem; border-radius: var(--radius); box-shadow: var(--shadow-xl); display: flex; align-items: center; gap: 0.5rem; opacity: 0; transition: all 0.3s ease; z-index: 1000; }
-        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .toast.success { background: var(--secondary); }
-        .toast.error { background: var(--danger); }
-        .toast.warning { background: var(--warning); }
-        .toast.info { background: var(--info); } /* Added info type */
+        /* Allow better spacing around inline images */
+        span.img-inline-wrapper {
+            display: inline-block;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
         
-        /* Modal */
-        .modal-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .modal-backdrop.show { display: flex; }
-        .modal { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); width: 90%; max-width: 500px; animation: modalIn 0.3s ease; }
-        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--gray-light); }
-        .modal-title { font-size: 1.5rem; font-weight: 600; margin: 0; }
-        .modal-body { padding: 1.5rem; color: var(--gray); }
-        .modal-footer { padding: 1.5rem; border-top: 1px solid var(--gray-light); display: flex; justify-content: flex-end; gap: 1rem; }
+        /* Make sure text wraps nicely */
+        #editor p {
+            margin: 1em 0;
+            line-height: 1.5;
+        }
         
-        /* Image Modal */
-        .image-modal { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); width: 90%; max-width: 400px; padding: 1.5rem; }
-        .image-modal h3 { margin-top: 0; margin-bottom: 1rem; color: var(--dark); }
-        .image-modal label { display: block; margin-bottom: 0.5rem; color: var(--gray); font-size: 0.875rem; font-weight: 500; }
-        .image-modal input, .image-modal select { width: 100%; padding: 0.5rem; margin-bottom: 1rem; border: 2px solid var(--gray-light); border-radius: var(--radius); transition: var(--transition); }
-        .image-modal input:focus, .image-modal select:focus { outline: none; border-color: var(--primary); }
+        /* Image dialog */
+        .image-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            width: 300px;
+            display: none;
+        }
         
-        /* Empty State */
-        .empty-state { text-align: center; padding: 3rem; color: var(--gray); }
-        .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; opacity: 0.3; }
-        .empty-state h3 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--dark); }
+        .image-dialog.active {
+            display: block;
+        }
         
-        /* Mobile Responsive */
-        .mobile-menu-btn { display: none; position: fixed; top: 1rem; right: 1rem; z-index: 101; background: var(--primary); color: white; border: none; padding: 0.75rem; border-radius: var(--radius); cursor: pointer; box-shadow: var(--shadow-lg); }
+        .image-dialog label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .image-dialog input, .image-dialog select {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .image-dialog-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .create-note {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+        
+        .create-note:hover {
+            background-color: var(--secondary-color);
+        }
+        
         @media (max-width: 768px) {
-            .header-stats { display: none; }
-            .main-container { padding: 1rem; margin: 1rem auto; }
-            .app-container { flex-direction: column; }
-            .sidebar { position: fixed; top: 0; right: -320px; height: 100vh; z-index: 200; transition: right 0.3s ease; box-shadow: var(--shadow-xl); }
-            .sidebar.show { right: 0; }
-            .mobile-menu-btn { display: block; }
-            .editor-container { padding: 1rem; }
-            #editor { padding: 1rem; }
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-left: none;
+                border-bottom: 1px solid #eee;
+            }
         }
-        
-        /* Scrollbar Styles */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--gray-lighter); }
-        ::-webkit-scrollbar-thumb { background: var(--gray); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--dark); }
-        
-        /* Loading Spinner */
-        .spinner { width: 40px; height: 40px; border: 3px solid var(--gray-light); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div class="app-wrapper">
-        <header class="header"><!-- ... header content ... --></header>
-        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-        <div class="main-container">
-            <div class="app-container">
-                <aside class="sidebar" id="sidebar"><!-- ... sidebar content ... --></aside>
-                <main class="main-content">
-                    <div class="editor-header"><input type="text" class="note-title-input" id="noteTitle" placeholder="געב א נאָמען פאר דיין נאָטיץ..."></div>
-                    <div class="toolbar"><!-- ... toolbar buttons ... --></div>
-                    <div class="editor-container"><div id="editor" contenteditable="true" data-placeholder="אָנהייב שרייבן דיין נאָטיץ..."></div></div>
-                    <div class="bottom-actions"><!-- ... bottom actions ... --></div>
-                </main>
+    <div class="container">
+        <header>
+            <h1>מיינע נאָטיצן</h1>
+        </header>
+        
+        <div class="app-container">
+            <div class="sidebar">
+                <button class="create-note" id="createNote">נייַע נאָטיץ</button>
+                <input type="text" class="search-box" id="searchNotes" placeholder="זוך נאָטיצן...">
+                <ul class="note-list" id="noteList">
+                    <!-- Notes will be dynamically added here -->
+                </ul>
+            </div>
+            
+            <div class="main-content">
+                <input type="text" class="note-title" id="noteTitle" placeholder="נאָטיץ טיטל">
+                
+                <div class="toolbar">
+                    <div class="toolbar-group">
+                        <button id="boldBtn" title="פעט">B</button>
+                        <button id="italicBtn" title="שיף">I</button>
+                        <button id="underlineBtn" title="אונטערשטרייכן">U</button>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="toolbar-group">
+                        <button id="alignRightBtn" title="יישור רעכטס">⫸</button>
+                        <button id="alignCenterBtn" title="יישור צענטער">≡</button>
+                        <button id="alignLeftBtn" title="יישור לינקס">⫷</button>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="toolbar-group">
+                        <button id="increaseBtn" title="פארגרעסערן שריפט">A+</button>
+                        <button id="decreaseBtn" title="פארקלענערן שריפט">A-</button>
+                        <select id="fontFamily">
+                            <option value="'David Libre', sans-serif">David Libre</option>
+                            <option value="'Noto Sans Hebrew', sans-serif">Noto Sans Hebrew</option>
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                        </select>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="toolbar-group">
+                        <input type="color" id="textColor" title="טעקסט קאליר" value="#000000">
+                        <input type="color" id="bgColor" title="הינטערגרונט קאליר" value="#ffffff">
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="toolbar-group">
+                        <button id="imageBtn" title="לייג צו בילד">בילד</button>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="toolbar-group">
+                        <button id="pdfBtn" title="דאַונלאָוד PDF">PDF</button>
+                    </div>
+                </div>
+                
+                <div class="content-area">
+                    <div id="editor" contenteditable="true"></div>
+                </div>
+                
+                <div class="button-container">
+                    <button class="btn btn-primary" id="saveNote">אויפֿהיטן</button>
+                    <button class="btn btn-danger" id="deleteNote">אויסמעקן</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="toast" id="toast"><span id="toastIcon"></span><span id="toastMessage"></span></div>
-    <div class="modal-backdrop" id="deleteModal"><!-- ... delete modal ... --></div>
-    <div class="modal-backdrop" id="imageModal"><!-- ... image modal ... --></div>
+    
+    <!-- Image options dialog -->
+    <div class="overlay" id="overlay"></div>
+    <div class="image-dialog" id="imageDialog">
+        <h3>בילד דעטאלן</h3>
+        
+        <label for="imageWidth">ברייט (פּיקסלס):</label>
+        <input type="number" id="imageWidth" min="10" max="1000" value="300">
+        
+        <label for="imageHeight">הייך (פּיקסלס):</label>
+        <input type="number" id="imageHeight" min="10" max="1000" value="200">
+        
+        <label for="imagePosition">פּאזיציע:</label>
+        <select id="imagePosition">
+            <option value="img-left">לינקס (טעקסט פליסט ארום)</option>
+            <option value="img-right">רעכטס (טעקסט פליסט ארום)</option>
+            <option value="img-center">צענטער</option>
+            <option value="img-inline">אינמיטן (טעקסט פון ביידע זייטן)</option>
+        </select>
+        
+        <div class="image-dialog-buttons">
+            <button id="insertImageBtn">לייג אריין</button>
+            <button id="cancelImageBtn">אפזאגן</button>
+        </div>
+    </div>
     
     <script>
-        // State Management
+        // Initialize the notes array from localStorage or create empty array
         let notes = JSON.parse(localStorage.getItem('notes')) || [];
         let currentNoteId = null;
-        let autoSaveTimer = null;
-        let currentImageURL = '';
         
-        // DOM Elements (same as before)
+        // DOM elements
         const noteList = document.getElementById('noteList');
         const noteTitle = document.getElementById('noteTitle');
         const editor = document.getElementById('editor');
-        const searchBox = document.getElementById('searchBox');
-        const totalNotesEl = document.getElementById('totalNotes');
-        const totalWordsEl = document.getElementById('totalWords');
-        const toast = document.getElementById('toast');
-        const toastIcon = document.getElementById('toastIcon');
-        const toastMessage = document.getElementById('toastMessage');
-        const deleteModal = document.getElementById('deleteModal');
-        const imageModal = document.getElementById('imageModal');
-        const sidebar = document.getElementById('sidebar');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const imageInput = document.getElementById('imageInput');
+        const createNoteBtn = document.getElementById('createNote');
+        const saveNoteBtn = document.getElementById('saveNote');
+        const deleteNoteBtn = document.getElementById('deleteNote');
+        const searchBox = document.getElementById('searchNotes');
         
-        document.addEventListener('DOMContentLoaded', () => {
-            // DOM elements (header, toolbar, etc.) are assumed to be filled as in the original HTML
-            // Only showing relevant parts for brevity in this thought block.
-            // The full HTML above contains all elements.
-            loadNotes();
-            setupEventListeners();
-            updateStats();
+        // Toolbar buttons
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const alignRightBtn = document.getElementById('alignRightBtn');
+        const alignCenterBtn = document.getElementById('alignCenterBtn');
+        const alignLeftBtn = document.getElementById('alignLeftBtn');
+        const increaseBtn = document.getElementById('increaseBtn');
+        const decreaseBtn = document.getElementById('decreaseBtn');
+        const fontFamilySelect = document.getElementById('fontFamily');
+        const textColorInput = document.getElementById('textColor');
+        const bgColorInput = document.getElementById('bgColor');
+        const imageBtn = document.getElementById('imageBtn');
+        const imageInput = document.getElementById('imageInput');
+        const pdfBtn = document.getElementById('pdfBtn');
+        
+        // Image dialog elements
+        const overlay = document.getElementById('overlay');
+        const imageDialog = document.getElementById('imageDialog');
+        const imageWidth = document.getElementById('imageWidth');
+        const imageHeight = document.getElementById('imageHeight');
+        const imagePosition = document.getElementById('imagePosition');
+        const insertImageBtn = document.getElementById('insertImageBtn');
+        const cancelImageBtn = document.getElementById('cancelImageBtn');
+        
+        // Current image URL for dialog
+        let currentImageURL = '';
+        
+        // Function to render the note list
+        function renderNoteList(notesToRender = notes) {
+            noteList.innerHTML = '';
             
-            if (notes.length > 0) {
-                loadNote(notes[0].id);
-            } else {
-                showEmptyStateEditor(); 
+            if (notesToRender.length === 0) {
+                const emptyItem = document.createElement('li');
+                emptyItem.textContent = 'קיין נאָטיצן נישט געפֿונען';
+                emptyItem.className = 'note-item';
+                noteList.appendChild(emptyItem);
+                return;
+            }
+            
+            notesToRender.forEach(note => {
+                const noteItem = document.createElement('li');
+                noteItem.className = 'note-item';
+                if (note.id === currentNoteId) {
+                    noteItem.classList.add('active');
+                }
+                
+                // Create title element with fallback text
+                const titleText = note.title.trim() ? note.title : 'נאָטיץ אָן א טיטל';
+                noteItem.textContent = titleText;
+                
+                // Add date as small text below title
+                const dateSpan = document.createElement('small');
+                dateSpan.style.display = 'block';
+                dateSpan.style.color = '#777';
+                dateSpan.style.fontSize = '0.8em';
+                dateSpan.textContent = new Date(note.updatedAt).toLocaleDateString('he-IL');
+                noteItem.appendChild(dateSpan);
+                
+                // Add click event
+                noteItem.addEventListener('click', () => loadNote(note.id));
+                
+                noteList.appendChild(noteItem);
+            });
+        }
+        
+        // Function to create a new note
+        function createNewNote() {
+            const newNote = {
+                id: Date.now(),
+                title: '',
+                content: '',
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            };
+            
+            notes.unshift(newNote);
+            saveNotesToStorage();
+            currentNoteId = newNote.id;
+            loadNote(currentNoteId);
+            renderNoteList();
+        }
+        
+        // Function to load a note into the editor
+        function loadNote(noteId) {
+            const note = notes.find(n => n.id === noteId);
+            if (note) {
+                currentNoteId = noteId;
+                noteTitle.value = note.title;
+                editor.innerHTML = note.content;
+                renderNoteList(); // Re-render to show active state
+            }
+        }
+        
+        // Function to save current note
+        function saveCurrentNote() {
+            if (currentNoteId === null) {
+                return;
+            }
+            
+            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
+            if (noteIndex !== -1) {
+                notes[noteIndex].title = noteTitle.value;
+                notes[noteIndex].content = editor.innerHTML;
+                notes[noteIndex].updatedAt = Date.now();
+                
+                // Move updated note to the top of the list
+                const updatedNote = notes.splice(noteIndex, 1)[0];
+                notes.unshift(updatedNote);
+                
+                saveNotesToStorage();
+                renderNoteList();
+            }
+        }
+        
+        // Function to delete current note
+        function deleteCurrentNote() {
+            if (currentNoteId === null) {
+                return;
+            }
+            
+            if (confirm('ביסטו זיכער אז דו ווילסט אויסמעקן די נאָטיץ?')) {
+                notes = notes.filter(n => n.id !== currentNoteId);
+                saveNotesToStorage();
+                
+                if (notes.length > 0) {
+                    currentNoteId = notes[0].id;
+                    loadNote(currentNoteId);
+                } else {
+                    currentNoteId = null;
+                    noteTitle.value = '';
+                    editor.innerHTML = '';
+                }
+                
+                renderNoteList();
+            }
+        }
+        
+        // Function to search notes
+        function searchNotes(query) {
+            if (!query.trim()) {
+                renderNoteList();
+                return;
+            }
+            
+            const lowerCaseQuery = query.toLowerCase();
+            const filteredNotes = notes.filter(note => 
+                note.title.toLowerCase().includes(lowerCaseQuery) || 
+                note.content.toLowerCase().includes(lowerCaseQuery)
+            );
+            
+            renderNoteList(filteredNotes);
+        }
+        
+        // Function to save notes to localStorage
+        function saveNotesToStorage() {
+            localStorage.setItem('notes', JSON.stringify(notes));
+        }
+        
+        // Toolbar button handlers
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            editor.focus();
+        });
+        
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            editor.focus();
+        });
+        
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            editor.focus();
+        });
+        
+        alignRightBtn.addEventListener('click', () => {
+            document.execCommand('justifyRight', false, null);
+            editor.focus();
+        });
+        
+        alignCenterBtn.addEventListener('click', () => {
+            document.execCommand('justifyCenter', false, null);
+            editor.focus();
+        });
+        
+        alignLeftBtn.addEventListener('click', () => {
+            document.execCommand('justifyLeft', false, null);
+            editor.focus();
+        });
+        
+        increaseBtn.addEventListener('click', () => {
+            document.execCommand('fontSize', false, '5');
+            editor.focus();
+        });
+        
+        decreaseBtn.addEventListener('click', () => {
+            document.execCommand('fontSize', false, '2');
+            editor.focus();
+        });
+        
+        fontFamilySelect.addEventListener('change', () => {
+            document.execCommand('fontName', false, fontFamilySelect.value);
+            editor.focus();
+        });
+        
+        textColorInput.addEventListener('input', () => {
+            document.execCommand('foreColor', false, textColorInput.value);
+            editor.focus();
+        });
+        
+        bgColorInput.addEventListener('input', () => {
+            document.execCommand('hiliteColor', false, bgColorInput.value);
+            editor.focus();
+        });
+        
+        // Image handling
+        imageBtn.addEventListener('click', () => {
+            imageInput.click();
+        });
+        
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentImageURL = event.target.result;
+                    
+                    // Show image dialog
+                    overlay.classList.add('active');
+                    imageDialog.classList.add('active');
+                    
+                    // Create temporary image to get dimensions
+                    const tempImg = new Image();
+                    tempImg.onload = () => {
+                        // Keep aspect ratio but limit max size
+                        const maxWidth = 500;
+                        let width = tempImg.width;
+                        let height = tempImg.height;
+                        
+                        if (width > maxWidth) {
+                            const ratio = maxWidth / width;
+                            width = maxWidth;
+                            height = Math.round(height * ratio);
+                        }
+                        
+                        imageWidth.value = width;
+                        imageHeight.value = height;
+                    };
+                    tempImg.src = currentImageURL;
+                };
+                reader.readAsDataURL(file);
+                
+                // Reset input so the same file can be selected again
+                e.target.value = '';
             }
         });
         
-        function loadNotes() { renderNoteList(notes); }
-        
-        function setupEventListeners() {
-            document.getElementById('createNoteBtn').addEventListener('click', createNewNote);
-            document.getElementById('saveBtn').addEventListener('click', saveNote);
-            document.getElementById('deleteBtn').addEventListener('click', () => openDeleteModal());
-            document.getElementById('exportBtn').addEventListener('click', exportToPDF);
-            searchBox.addEventListener('input', (e) => searchNotes(e.target.value));
-            noteTitle.addEventListener('input', () => autoSave());
-            editor.addEventListener('input', () => { autoSave(); updateEditorActiveStates(); });
-            editor.addEventListener('click', updateEditorActiveStates);
-            editor.addEventListener('keyup', updateEditorActiveStates); // For cursor movement keys
-            editor.addEventListener('focus', updateEditorActiveStates); // When editor gets focus
-
-            document.getElementById('boldBtn').addEventListener('click', () => { formatText('bold'); updateEditorActiveStates(); });
-            document.getElementById('italicBtn').addEventListener('click', () => { formatText('italic'); updateEditorActiveStates(); });
-            document.getElementById('underlineBtn').addEventListener('click', () => { formatText('underline'); updateEditorActiveStates(); });
-            document.getElementById('strikeBtn').addEventListener('click', () => { formatText('strikeThrough'); updateEditorActiveStates(); });
-            document.getElementById('h1Btn').addEventListener('click', () => { formatHeading('h1'); updateEditorActiveStates(); });
-            document.getElementById('h2Btn').addEventListener('click', () => { formatHeading('h2'); updateEditorActiveStates(); });
-            document.getElementById('h3Btn').addEventListener('click', () => { formatHeading('h3'); updateEditorActiveStates(); });
-            document.getElementById('ulBtn').addEventListener('click', () => { formatText('insertUnorderedList'); updateEditorActiveStates(); });
-            document.getElementById('olBtn').addEventListener('click', () => { formatText('insertOrderedList'); updateEditorActiveStates(); });
-            document.getElementById('quoteBtn').addEventListener('click', () => { formatQuote(); updateEditorActiveStates(); }); // Updated formatQuote
-            document.getElementById('alignRightBtn').addEventListener('click', () => { formatText('justifyRight'); updateEditorActiveStates(); });
-            document.getElementById('alignCenterBtn').addEventListener('click', () => { formatText('justifyCenter'); updateEditorActiveStates(); });
-            document.getElementById('alignLeftBtn').addEventListener('click', () => { formatText('justifyLeft'); updateEditorActiveStates(); });
-            document.getElementById('fontFamily').addEventListener('change', (e) => { formatText('fontName', e.target.value); updateEditorActiveStates(); });
-            document.getElementById('fontSizeUp').addEventListener('click', () => { changeFontSize(1); updateEditorActiveStates(); });
-            document.getElementById('fontSizeDown').addEventListener('click', () => { changeFontSize(-1); updateEditorActiveStates(); });
-            document.getElementById('textColor').addEventListener('input', (e) => { formatText('foreColor', e.target.value); updateEditorActiveStates(); });
-            document.getElementById('bgColor').addEventListener('input', (e) => { formatText('hiliteColor', e.target.value); updateEditorActiveStates(); });
-            document.getElementById('linkBtn').addEventListener('click', insertLink);
-            document.getElementById('imageBtn').addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', handleImageUpload);
-            document.getElementById('undoBtn').addEventListener('click', () => { document.execCommand('undo'); updateEditorActiveStates(); });
-            document.getElementById('redoBtn').addEventListener('click', () => { document.execCommand('redo'); updateEditorActiveStates(); });
-            mobileMenuBtn.addEventListener('click', toggleSidebar);
-            document.addEventListener('keydown', handleKeyboardShortcuts);
-        }
-
-        function updateEditorActiveStates() {
-            const commandsToQueryState = ['bold', 'italic', 'underline', 'strikeThrough'];
-            commandsToQueryState.forEach(cmd => {
-                const btn = document.getElementById(cmd + 'Btn');
-                if (btn) {
-                    try {
-                        btn.classList.toggle('active', document.queryCommandState(cmd));
-                    } catch (e) { console.warn(`Error querying state for ${cmd}:`, e); btn.classList.remove('active'); }
-                }
-            });
-
-            const listCommands = { 'ulBtn': 'insertUnorderedList', 'olBtn': 'insertOrderedList' };
-            for (const btnId in listCommands) {
-                const btn = document.getElementById(btnId);
-                if (btn) {
-                    try {
-                        btn.classList.toggle('active', document.queryCommandState(listCommands[btnId]));
-                    } catch (e) { console.warn(`Error querying state for ${listCommands[btnId]}:`, e); btn.classList.remove('active'); }
-                }
-            }
-            
-            const justifyCommands = { 'alignRightBtn': 'justifyRight', 'alignCenterBtn': 'justifyCenter', 'alignLeftBtn': 'justifyLeft' };
-            for (const btnId in justifyCommands) {
-                const btn = document.getElementById(btnId);
-                if (btn) {
-                     try {
-                        btn.classList.toggle('active', document.queryCommandState(justifyCommands[btnId]));
-                    } catch (e) { console.warn(`Error querying state for ${justifyCommands[btnId]}:`, e); btn.classList.remove('active'); }
-                }
-            }
-
-            try {
-                const fontName = document.queryCommandValue('fontName');
-                if (fontName) {
-                    const selectFont = document.getElementById('fontFamily');
-                    // Normalize font name from queryCommandValue (e.g. remove quotes)
-                    const normalizedFontName = fontName.replace(/['"]/g, '').toLowerCase();
-                    // Find matching option (case-insensitive and ignoring quotes)
-                    let found = false;
-                    for (let i = 0; i < selectFont.options.length; i++) {
-                        if (selectFont.options[i].value.replace(/['"]/g, '').toLowerCase() === normalizedFontName) {
-                            selectFont.value = selectFont.options[i].value;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) { // If exact match not found, try to set to default or clear
-                         selectFont.value = selectFont.options[3].value; // Noto Sans Hebrew default
-                    }
-                }
-            } catch (e) { console.warn("Could not query fontName", e); }
-
-            const quoteBtn = document.getElementById('quoteBtn');
-            if (quoteBtn) {
-                let isBlockquote = false;
+        // Handle image dialog
+        insertImageBtn.addEventListener('click', () => {
+            if (currentImageURL) {
+                const img = document.createElement('img');
+                img.src = currentImageURL;
+                img.width = imageWidth.value;
+                img.height = imageHeight.value;
+                img.className = imagePosition.value;
+                
+        // Insert at cursor position or at the end
                 const selection = window.getSelection();
                 if (selection.rangeCount > 0) {
-                    let node = selection.getRangeAt(0).commonAncestorContainer;
-                    // Traverse up to the editor div, or max 10 levels to avoid performance issues
-                    for (let i = 0; i < 10 && node && node !== editor && node !== document.body; i++) { 
-                        if (node.nodeName === 'BLOCKQUOTE') {
-                            isBlockquote = true;
-                            break;
-                        }
-                        // Stop if node.parentNode is null or not an Element
-                        if (!node.parentNode || !(node.parentNode instanceof Element)) break; 
-                        node = node.parentNode;
-                    }
-                }
-                quoteBtn.classList.toggle('active', isBlockquote);
-            }
-        }
-        
-        function createNewNote() {
-            const newNote = { id: Date.now(), title: '', content: '', createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-            notes.unshift(newNote);
-            saveToLocalStorage(); 
-            loadNote(newNote.id); 
-            noteTitle.focus();
-            showToast('נייַע נאָטיץ געשאַפֿן! ✨', 'success');
-            hideEmptyStateEditor();
-        }
-        
-        function loadNote(noteId) {
-            const note = notes.find(n => n.id === noteId);
-            if (!note) {
-                if (notes.length === 0) showEmptyStateEditor();
-                return;
-            }
-            currentNoteId = noteId;
-            noteTitle.value = note.title;
-            editor.innerHTML = note.content;
-            renderNoteList(notes); 
-            updateStats();
-            updateEditorActiveStates();
-            hideEmptyStateEditor();
-            if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
-                sidebar.classList.remove('show');
-            }
-        }
-        
-        function saveNote() {
-            if (!currentNoteId) {
-                if (noteTitle.value.trim() || editor.innerHTML.trim()) {
-                    createNewNote(); 
-                }
-                return;
-            }
-            const noteIndex = notes.findIndex(n => n.id === currentNoteId);
-            if (noteIndex === -1) return; 
-            notes[noteIndex].title = noteTitle.value;
-            notes[noteIndex].content = editor.innerHTML;
-            notes[noteIndex].updatedAt = new Date().toISOString();
-            if (noteIndex > 0) {
-                const note = notes.splice(noteIndex, 1)[0];
-                notes.unshift(note);
-            }
-            saveToLocalStorage();
-            renderNoteList(notes); 
-            updateStats();
-            showToast('נאָטיץ געהיט! ✅', 'success');
-        }
-        
-        function autoSave() {
-            clearTimeout(autoSaveTimer);
-            autoSaveTimer = setTimeout(() => {
-                if (currentNoteId || noteTitle.value.trim() || editor.innerHTML.trim()) {
-                    saveNote();
-                }
-            }, 1500); 
-        }
-        
-        function openDeleteModal() {
-            if (!currentNoteId) {
-                showToast('קיין נאָטיץ אויסגעקליבן אויסצומעקן.', 'warning');
-                return;
-            }
-            deleteModal.classList.add('show');
-        }
-        function closeDeleteModal() { deleteModal.classList.remove('show'); }
-        
-        function confirmDelete() {
-            if (!currentNoteId) return;
-            notes = notes.filter(n => n.id !== currentNoteId);
-            saveToLocalStorage();
-            currentNoteId = null; 
-            if (notes.length > 0) {
-                loadNote(notes[0].id); 
-            } else {
-                noteTitle.value = '';
-                editor.innerHTML = '';
-                renderNoteList(notes); 
-                showEmptyStateEditor(); 
-                updateStats();
-            }
-            closeDeleteModal();
-            showToast('נאָטיץ אויסגעמעקט! 🗑️', 'success');
-        }
-        
-        function searchNotes(query) {
-            const trimmedQuery = query.trim().toLowerCase();
-            if (!trimmedQuery) { renderNoteList(notes); return; }
-            const filtered = notes.filter(note => 
-                note.title.toLowerCase().includes(trimmedQuery) || 
-                stripHtml(note.content).toLowerCase().includes(trimmedQuery)
-            );
-            renderNoteList(filtered);
-        }
-        
-        function renderNoteList(notesToRender) {
-            noteList.innerHTML = '';
-            if (notesToRender.length === 0 && notes.length === 0) {
-                noteList.innerHTML = `<li class="empty-state" style="padding: 1rem;"><div class="empty-state-icon" style="font-size: 2rem;">📝</div><h3 style="font-size: 1.2rem;">נאָך קיין נאָטיצן</h3><p style="font-size: 0.9rem;">דריק "נייַע נאָטיץ"</p></li>`;
-                return;
-            } else if (notesToRender.length === 0 && notes.length > 0) {
-                 noteList.innerHTML = '<li class="empty-state" style="padding: 1rem;"><p>קיין נאָטיצן געפֿונען פֿאַר דיין זוך</p></li>';
-                 return;
-            }
-            notesToRender.forEach(note => {
-                const li = document.createElement('li');
-                li.className = 'note-item';
-                if (note.id === currentNoteId) li.classList.add('active');
-                li.innerHTML = `
-                    <div class="note-item-title">${note.title || 'אָן נאָמען'}</div>
-                    <div class="note-item-preview">${getPreview(note.content)}</div>
-                    <div class="note-meta">
-                        <span>📅 ${formatDate(note.updatedAt)}</span>
-                        <span>${getWordCount(note.content)} ווערטער</span>
-                    </div>
-                `;
-                li.addEventListener('click', () => loadNote(note.id));
-                noteList.appendChild(li);
-            });
-        }
-        
-        function showEmptyStateEditor() {
-            document.querySelector('.editor-header').style.display = 'none';
-            document.querySelector('.toolbar').style.display = 'none';
-            document.querySelector('.editor-container').style.display = 'none';
-            document.querySelector('.bottom-actions').style.display = 'none';
-            let emptyEditorMessage = document.getElementById('emptyEditorMessage');
-            if (!emptyEditorMessage) {
-                emptyEditorMessage = document.createElement('div');
-                emptyEditorMessage.id = 'emptyEditorMessage';
-                emptyEditorMessage.className = 'empty-state';
-                emptyEditorMessage.style.cssText = 'flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem;';
-                emptyEditorMessage.innerHTML = `<div class="empty-state-icon">📝</div><h3>וואַרט אויף דיין געדאַנקען...</h3><p>שאַפֿט אַ נייַע נאָטיץ אָדער קלויבט אויס איינס פון דער ליסטע.</p>`;
-                document.querySelector('.main-content').appendChild(emptyEditorMessage);
-            }
-            emptyEditorMessage.style.display = 'flex';
-        }
-
-        function hideEmptyStateEditor() {
-            document.querySelector('.editor-header').style.display = '';
-            document.querySelector('.toolbar').style.display = 'flex';
-            document.querySelector('.editor-container').style.display = 'flex'; 
-            document.querySelector('.bottom-actions').style.display = 'flex';
-            const emptyEditorMessage = document.getElementById('emptyEditorMessage');
-            if (emptyEditorMessage) emptyEditorMessage.style.display = 'none';
-        }
-        
-        function formatText(command, value = null) { document.execCommand(command, false, value); editor.focus(); }
-        function formatHeading(tag) { document.execCommand('formatBlock', false, tag); editor.focus(); }
-        
-        function formatQuote() {
-            editor.focus();
-            let isBlockquote = false;
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                let node = selection.getRangeAt(0).commonAncestorContainer;
-                for (let i = 0; i < 10 && node && node !== editor && node !== document.body; i++) {
-                    if (node.nodeName === 'BLOCKQUOTE') { isBlockquote = true; break; }
-                    if (!node.parentNode || !(node.parentNode instanceof Element)) break;
-                    node = node.parentNode;
-                }
-            }
-            if (isBlockquote) {
-                document.execCommand('formatBlock', false, 'p'); // Revert to paragraph
-            } else {
-                document.execCommand('formatBlock', false, 'blockquote');
-            }
-            updateEditorActiveStates();
-        }
-
-        function changeFontSize(direction) {
-            const currentSize = document.queryCommandValue('fontSize') || '3'; 
-            let newSize = parseInt(currentSize) + direction;
-            newSize = Math.max(1, Math.min(7, newSize)); 
-            formatText('fontSize', newSize.toString());
-        }
-        
-        function insertLink() {
-            const url = prompt('שרייב אַרייַן דעם לינק URL:', 'https://');
-            if (!url) return;
-            formatText('createLink', url);
-        }
-        
-        function handleImageUpload(e) {
-            const file = e.target.files[0];
-            if (!file || !file.type.startsWith('image/')) {
-                showToast('ביטע קלויב אויס אַ בילד טעקע.', 'warning');
-                if(file) e.target.value = ''; // Reset if wrong file type
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                currentImageURL = event.target.result;
-                const img = new Image();
-                img.onload = () => {
-                    document.getElementById('imgWidth').value = Math.min(img.width, 600);
-                    document.getElementById('imgHeight').value = Math.round(Math.min(img.height, img.height * (Math.min(img.width, 600) / img.width)));
-                    imageModal.classList.add('show');
-                };
-                img.src = currentImageURL;
-            };
-            reader.readAsDataURL(file);
-            e.target.value = ''; 
-        }
-        
-        function closeImageModal() { imageModal.classList.remove('show'); currentImageURL = ''; }
-        
-        function insertImage() {
-            if (!currentImageURL) return;
-            const imgElement = document.createElement('img');
-            imgElement.src = currentImageURL;
-            const width = document.getElementById('imgWidth').value;
-            const height = document.getElementById('imgHeight').value;
-            if (width) imgElement.style.width = `${width}px`;
-            if (height) imgElement.style.height = `${height}px`;
-            imgElement.className = document.getElementById('imgPosition').value;
-            editor.focus(); 
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                range.deleteContents(); 
-                range.insertNode(imgElement);
-                const p = document.createElement('p');
-                const br = document.createElement('br'); 
-                p.appendChild(br);
-                // Place cursor after the image, then insert paragraph, then move cursor into paragraph
-                const newRange = document.createRange();
-                newRange.setStartAfter(imgElement);
-                newRange.collapse(true);
-                newRange.insertNode(p);
-                selection.removeAllRanges();
-                newRange.selectNodeContents(p); // Select the new paragraph
-                newRange.collapse(false); // Collapse to the end of the new paragraph
-                selection.addRange(newRange);
-            } else { 
-                editor.appendChild(imgElement);
-                editor.appendChild(document.createElement('p')).appendChild(document.createElement('br')); 
-            }
-            closeImageModal(); autoSave();
-        }
-        
-        function exportToPDF() {
-            if (!currentNoteId && !editor.innerHTML.trim()) {
-                showToast('קיין אינהאַלט צו עקספּאָרטירן.', 'warning');
-                return;
-            }
-            const noteContentHTML = editor.innerHTML;
-            const noteTitleText = noteTitle.value || 'אָן נאָמען';
-
-            const opt = {
-                margin: [15, 12, 15, 12], // T, R, B, L in mm
-                filename: `${noteTitleText.replace(/[<>:"/\\|?* .]+/g, '_') || 'נאָטיץ'}_${new Date().toISOString().slice(0,10)}.pdf`,
-                image: { type: 'jpeg', quality: 0.95 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    letterRendering: true,
-                    logging: true, // For debugging PDF issues
-                    onclone: (documentClone) => {
-                        const style = documentClone.createElement('style');
-                        style.innerHTML = `
-                            @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=David+Libre:wght@400;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap');
-                            body { font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif; direction: rtl; text-align: right; line-height: 1.6; color: #333333; margin: 0; padding: 0; word-wrap: break-word; }
-                            .pdf-title { font-size: 2.0em; text-align: center; margin-bottom: 15px; font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif; color: #2d3748; }
-                            .pdf-date { font-size: 0.9em; text-align: center; color: #555555; margin-bottom: 25px; font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif; }
-                            h1, h2, h3, h4, h5, h6 { color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; }
-                            h1 { font-size: 1.8em; } h2 { font-size: 1.4em; } h3 { font-size: 1.15em; }
-                            p { margin: 0.8em 0; }
-                            ul, ol { padding-right: 20px; margin-right: 10px; margin-top: 0.8em; margin-bottom: 0.8em; }
-                            li { margin: 0.4em 0; }
-                            blockquote { border-right: 3px solid #667eea; padding-right: 10px; margin: 0.8em 10px 0.8em 0; color: #718096; font-style: italic; }
-                            a { color: #667eea; text-decoration: none; } a:hover { text-decoration: underline; }
-                            img { max-width: 100% !important; height: auto !important; border-radius: 4px; display: block; margin: 0.8em auto; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-                            img.img-left { float: right !important; margin: 0 0 0.5em 0.5em !important; max-width: 40% !important; }
-                            img.img-right { float: left !important; margin: 0 0.5em 0.5em 0 !important; max-width: 40% !important; }
-                            [style*="color:"], [style*="background-color:"], [style*="font-family:"] { /* Attempt to preserve inline styles */ }
-                        `;
-                        documentClone.head.appendChild(style);
-                        documentClone.documentElement.setAttribute('dir', 'rtl');
-                        documentClone.documentElement.style.textAlign = 'right';
-                        documentClone.body.style.textAlign = 'right';
-                    }
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-
-            const elementToPrint = document.createElement('div');
-            elementToPrint.style.direction = 'rtl'; 
-            elementToPrint.innerHTML = `
-                <div class="pdf-title">${noteTitleText}</div>
-                <div class="pdf-date">דאטום: ${new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-                <div>${noteContentHTML}</div>
-            `;
-            
-            showToast('גענערירן PDF... ביטע ווארט.', 'info'); 
-            setTimeout(() => {
-                html2pdf().from(elementToPrint).set(opt).save()
-                    .then(() => { showToast('PDF דאַונלאָוד געשטאַרט! 📄', 'success'); })
-                    .catch(err => {
-                        console.error("PDF Export Error:", err);
-                        showToast('PDF עקספּאָרט טעות! ❌ זע קאָנסאָל פֿאַר פרטים.', 'error');
-                    });
-            }, 100);
-        }
-
-        function stripHtml(html) { const tmp = document.createElement('div'); tmp.innerHTML = html; return tmp.textContent || tmp.innerText || ''; }
-        function getPreview(content) { const text = stripHtml(content); return text.length > 80 ? text.substring(0, 80) + '...' : text; }
-        function getWordCount(content) { const text = stripHtml(content); if (!text.trim()) return 0; return text.split(/\s+/).filter(word => word.length > 0).length; }
-        function formatDate(dateString) {
-            const date = new Date(dateString); const now = new Date();
-            const diffSeconds = Math.floor((now - date) / 1000);
-            if (diffSeconds < 60) return 'איצט';
-            const diffMinutes = Math.floor(diffSeconds / 60);
-            if (diffMinutes < 60) return `פֿאַר ${diffMinutes} מינוט`;
-            const diffHours = Math.floor(diffMinutes / 60);
-            if (diffHours < 24) return `פֿאַר ${diffHours} שעה`;
-            const diffDays = Math.floor(diffHours / 24);
-            if (diffDays < 7) return `פֿאַר ${diffDays} טעג`;
-            return date.toLocaleDateString('he-IL');
-        }
-        function updateStats() {
-            totalNotesEl.textContent = notes.length;
-            let totalWords = 0;
-            notes.forEach(note => { totalWords += getWordCount(note.content); });
-            totalWordsEl.textContent = totalWords;
-        }
-                function showToast(message, type = 'success', duration = 3000) { // Added duration parameter
-            const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-            toastIcon.textContent = icons[type] || 'ℹ️';
-            toastMessage.textContent = message;
-            toast.className = 'toast'; 
-            toast.classList.add(type, 'show'); 
-            setTimeout(() => { toast.classList.remove('show'); }, duration);
-        }
-
-        async function exportToPDF() {
-            if (!currentNoteId && !editor.innerHTML.trim()) {
-                showToast('קיין אינהאַלט צו עקספּאָרטירן.', 'warning');
-                return;
-            }
-            
-            showToast('גענערירן PDF... ביטע ווארט. דאָס קען דויערן אַ וויילע...', 'info', 6000);
-
-            const noteContentHTML = editor.innerHTML;
-            const noteTitleText = noteTitle.value || 'אָן נאָמען';
-
-            // 1. Create a dedicated element for PDF generation
-            const pdfElement = document.createElement('div');
-            pdfElement.setAttribute('id', 'pdfContentContainer'); // Add ID for easier debugging
-            pdfElement.style.direction = 'rtl';
-            pdfElement.style.fontFamily = "'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif";
-            pdfElement.style.textAlign = 'right';
-            pdfElement.style.lineHeight = '1.6';
-            pdfElement.style.color = '#333333';
-            pdfElement.style.width = '180mm'; // A4 width minus margins (210mm - 15mm - 15mm)
-            pdfElement.style.padding = '10mm'; // Internal padding
-            pdfElement.style.margin = '0 auto'; // Center if rendered visible
-            pdfElement.style.backgroundColor = 'white'; // Ensure background is white
-            pdfElement.style.wordWrap = 'break-word'; // Ensure long words break
-
-            // 2. Add global styles directly
-            const styleElement = document.createElement('style');
-            styleElement.innerHTML = `
-                @font-face {
-                    font-family: 'Rubik';
-                    src: url('https://fonts.gstatic.com/s/rubik/v28/iJWKBXyIfDnIV7nMrXyi0A.woff2') format('woff2'); /* Example, ensure correct paths if self-hosting */
-                }
-                @font-face {
-                    font-family: 'Noto Sans Hebrew';
-                    src: url('https://fonts.gstatic.com/s/notosanshebrew/v31/or30Q7vN1_2_kAoN1IBzerR2s5tdY2A.woff2') format('woff2');
-                }
-                 @font-face {
-                    font-family: 'David Libre';
-                    src: url('https://fonts.gstatic.com/s/davidlibre/v16/snfus0W_99NpgjH2qトゥエンティ-q_M-SDQ.woff2') format('woff2'); /* Corrected David Libre URL */
-                }
-                /* Ensure all elements within pdfElement inherit base styles */
-                #pdfContentContainer, #pdfContentContainer * {
-                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif !important;
-                    direction: rtl !important;
-                    text-align: right !important;
-                    box-sizing: border-box !important; /* Critical for layout */
-                }
-                .pdf-title-render { font-size: 2.0em; text-align: center; margin-bottom: 15px; color: #2d3748; font-weight: bold; }
-                .pdf-date-render { font-size: 0.9em; text-align: center; color: #555555; margin-bottom: 25px; }
-                h1 { font-size: 1.8em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
-                h2 { font-size: 1.4em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
-                h3 { font-size: 1.15em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
-                p { margin: 0.8em 0; }
-                ul, ol { padding-right: 20px; margin-right: 10px; margin-top: 0.8em; margin-bottom: 0.8em; }
-                li { margin: 0.4em 0; }
-                blockquote { border-right: 3px solid #667eea; padding-right: 10px; margin: 0.8em 10px 0.8em 0; color: #718096; font-style: italic; background-color: #f8f9fa; }
-                a { color: #667eea; text-decoration: none; } a:hover { text-decoration: underline; }
-                img { max-width: 100% !important; height: auto !important; border-radius: 4px; display: block; margin: 0.8em auto; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-                img.img-left { float: right !important; margin: 0 0 0.5em 0.5em !important; max-width: 40% !important; }
-                img.img-right { float: left !important; margin: 0 0.5em 0.5em 0 !important; max-width: 40% !important; }
-            `;
-            pdfElement.appendChild(styleElement);
-
-            // 3. Add title and date
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'pdf-title-render';
-            titleDiv.textContent = noteTitleText;
-            pdfElement.appendChild(titleDiv);
-
-            const dateDiv = document.createElement('div');
-            dateDiv.className = 'pdf-date-render';
-            dateDiv.textContent = `דאטום: ${new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}`;
-            pdfElement.appendChild(dateDiv);
-
-            // 4. Add content (cloned to avoid issues with live editor elements)
-            const contentDiv = document.createElement('div');
-            contentDiv.innerHTML = noteContentHTML; // This content already comes from the editor
-            
-            // Sanitize and prepare images within contentDiv
-            const images = Array.from(contentDiv.getElementsByTagName('img'));
-            const imagePromises = images.map(img => {
-                return new Promise((resolve, reject) => {
-                    if (img.complete && img.naturalHeight !== 0) { // Already loaded
-                        resolve();
+                    const range = selection.getRangeAt(0);
+                    
+                    // For inline image, create special wrapping
+                    if (imagePosition.value === 'img-inline') {
+                        // Create a span to allow text to wrap around inline
+                        const span = document.createElement('span');
+                        span.className = 'img-inline-wrapper';
+                        span.appendChild(img);
+                        
+                        range.deleteContents();
+                        range.insertNode(span);
+                        
+                        // Add a space after the image for better editing
+                        const space = document.createTextNode(' ');
+                        span.parentNode.insertBefore(space, span.nextSibling);
                     } else {
-                        // If src is a data URL, it should load quickly. If external, this helps.
-                        const newImg = new Image();
-                        newImg.onload = () => {
-                            // Replace original img src if it was relative or problematic
-                            // For simplicity, we assume DataURLs are fine or external URLs are accessible
-                            // This step is crucial if original images were not DataURLs
-                            if (img.src !== newImg.src && newImg.src.startsWith('data:')) {
-                                img.src = newImg.src;
-                            }
-                            resolve();
-                        };
-                        newImg.onerror = () => {
-                            console.warn('PDF Export: Image could not be loaded:', img.src);
-                            // img.style.display = 'none'; // Optionally hide broken images
-                            resolve(); // Resolve anyway to not block PDF generation
-                        };
-                        newImg.src = img.src; // Trigger load
+                        range.deleteContents();
+                        range.insertNode(img);
                     }
-                });
-            });
-
-            await Promise.all(imagePromises).catch(err => console.error("Error loading images for PDF:", err));
+                } else {
+                    editor.appendChild(img);
+                }
+                
+                // Close dialog
+                overlay.classList.remove('active');
+                imageDialog.classList.remove('active');
+                currentImageURL = '';
+                
+                // Focus back on editor
+                editor.focus();
+            }
+        });
+        
+        cancelImageBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            imageDialog.classList.remove('active');
+            currentImageURL = '';
+        });
+        
+        // Export to PDF
+        pdfBtn.addEventListener('click', () => {
+            // Create a wrapper for the note content
+            const noteWrapper = document.createElement('div');
+            noteWrapper.style.direction = 'rtl';
+            noteWrapper.style.fontFamily = 'David Libre, sans-serif';
+            noteWrapper.style.padding = '20px';
             
-            pdfElement.appendChild(contentDiv);
+            // Add title
+            const titleElement = document.createElement('h1');
+            titleElement.style.textAlign = 'center';
+            titleElement.style.marginBottom = '20px';
+            titleElement.textContent = noteTitle.value || 'נאָטיץ אָן א טיטל';
+            noteWrapper.appendChild(titleElement);
             
-            // 5. Temporarily append to body (hidden) for rendering
-            pdfElement.style.position = 'fixed';
-            pdfElement.style.left = '-10000px'; // Position off-screen
-            pdfElement.style.top = '-10000px';
-            pdfElement.style.opacity = '0'; // Make it invisible
-            document.body.appendChild(pdfElement);
-
-            console.log("Element to be converted to PDF:", pdfElement.outerHTML.substring(0, 5000) + "..."); // Log the HTML structure
-
+            // Add content
+            const contentElement = document.createElement('div');
+            contentElement.innerHTML = editor.innerHTML;
+            noteWrapper.appendChild(contentElement);
+            
+            // Generate file name
+            const fileName = `${noteTitle.value || 'note'}_${new Date().toLocaleDateString('he-IL')}.pdf`;
+            
+            // PDF options
             const opt = {
-                margin: [10, 10, 10, 10], // Margins for jsPDF in mm (T,R,B,L)
-                filename: `${noteTitleText.replace(/[<>:"/\\|?* .]+/g, '_') || 'נאָטיץ'}_${new Date().toISOString().slice(0,10)}.pdf`,
-                image: { type: 'jpeg', quality: 0.95 }, // Image settings for html2canvas
-                html2canvas: {
-                    scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, // Use device pixel ratio or default to 2 for sharpness
-                    useCORS: true, // For external images/fonts
-                    letterRendering: true, // Better text rendering
-                    logging: true, // Enable html2canvas logging
-                    scrollX: 0, // Ensure it captures from the top-left
-                    scrollY: 0,
-                    windowWidth: pdfElement.scrollWidth, // Use the actual width of the element
-                    windowHeight: pdfElement.scrollHeight, // Use the actual height of the element
-                    backgroundColor: null, // Transparent background for canvas, pdfElement defines actual bg
-                    onclone: (documentClone) => {
-                         // Re-apply direction on the cloned document's root for good measure
-                        documentClone.documentElement.setAttribute('dir', 'rtl');
-                        documentClone.documentElement.style.fontFamily = "'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif";
-                    }
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait',
-                    compress: true
-                },
-                pagebreak: { mode: ['css', 'legacy'], avoid: ['img', 'blockquote', 'h1', 'h2', 'h3'] } // Try to avoid breaking these elements
+                margin: [10, 10],
+                filename: fileName,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
-
-            try {
-                const pdf = await html2pdf().from(pdfElement).set(opt).save();
-                showToast('PDF דאַונלאָוד געשטאַרט! 📄', 'success');
-            } catch (error) {
-                console.error("PDF Export Error:", error);
-                showToast(`PDF עקספּאָרט טעות: ${error.message.substring(0,100)}... זע קאָנסאָל.`, 'error', 6000);
-            } finally {
-                // 6. Remove the temporary element
-                if (document.body.contains(pdfElement)) {
-                    document.body.removeChild(pdfElement);
-                }
-            }
-        }
-        function saveToLocalStorage() { localStorage.setItem('notes', JSON.stringify(notes)); }
-        function toggleSidebar() { sidebar.classList.toggle('show'); mobileMenuBtn.textContent = sidebar.classList.contains('show') ? '✕' : '☰'; }
-        function handleKeyboardShortcuts(e) {
-            if (e.ctrlKey || e.metaKey) { 
-                const key = e.key.toLowerCase();
-                if (key === 's') { e.preventDefault(); saveNote(); }
-                else if (key === 'n') { e.preventDefault(); createNewNote(); }
-                else if (key === 'b') { e.preventDefault(); formatText('bold'); updateEditorActiveStates(); }
-                else if (key === 'i') { e.preventDefault(); formatText('italic'); updateEditorActiveStates(); }
-                else if (key === 'u') { e.preventDefault(); formatText('underline'); updateEditorActiveStates(); }
-                else if (key === '/') { if (document.activeElement !== searchBox) { e.preventDefault(); searchBox.focus(); } }
-            }
-        }
-        window.addEventListener('beforeunload', () => {
+            
+            // Generate PDF
+            html2pdf().set(opt).from(noteWrapper).save();
+        });
+        
+        // Auto-save when typing
+        noteTitle.addEventListener('input', () => {
             if (currentNoteId) {
-                const note = notes.find(n => n.id === currentNoteId);
-                if (note && (note.title !== noteTitle.value || note.content !== editor.innerHTML)) {
-                   saveNote(); 
-                }
-            } else if (noteTitle.value.trim() || editor.innerHTML.trim()) { // Unsaved new note
-                saveNote(); // This will trigger createNewNote logic
+                clearTimeout(window.saveTimeout);
+                window.saveTimeout = setTimeout(saveCurrentNote, 1000);
             }
+        });
+        
+        editor.addEventListener('input', () => {
+            if (currentNoteId) {
+                clearTimeout(window.saveTimeout);
+                window.saveTimeout = setTimeout(saveCurrentNote, 1000);
+            }
+        });
+        
+        // Event Listeners
+        createNoteBtn.addEventListener('click', createNewNote);
+        saveNoteBtn.addEventListener('click', saveCurrentNote);
+        deleteNoteBtn.addEventListener('click', deleteCurrentNote);
+        searchBox.addEventListener('input', (e) => searchNotes(e.target.value));
+        
+        // Initialize the app
+        window.addEventListener('DOMContentLoaded', () => {
+            if (notes.length > 0) {
+                currentNoteId = notes[0].id;
+                loadNote(currentNoteId);
+            }
+            renderNoteList();
+            
+            // Set placeholder text for contenteditable
+            editor.dataset.placeholder = "שרייב דיין נאָטיץ דאָ...";
+            const style = document.createElement('style');
+            style.textContent = `
+                [contenteditable=true]:empty:before {
+                    content: attr(data-placeholder);
+                    color: #aaa;
+                    font-style: italic;
+                }
+            `;
+            document.head.appendChild(style);
         });
     </script>
 </body>
