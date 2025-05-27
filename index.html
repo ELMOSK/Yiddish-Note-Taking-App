@@ -135,6 +135,7 @@
             margin: 2rem auto;
             width: 100%;
             padding: 0 2rem;
+            display: flex; /* Added for app-container to take height */
         }
         
         .app-container {
@@ -142,7 +143,8 @@
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
             display: flex;
-            height: calc(100vh - 180px);
+            /* height: calc(100vh - 180px); */ /* Replaced by flex behavior */
+            flex: 1; /* Take available space in main-container */
             overflow: hidden;
         }
         
@@ -154,6 +156,7 @@
             display: flex;
             flex-direction: column;
             transition: var(--transition);
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
         }
         
         .sidebar-header {
@@ -295,6 +298,7 @@
             display: flex;
             flex-direction: column;
             background: var(--white);
+            overflow: hidden; /* Prevent content from pushing layout */
         }
         
         .editor-header {
@@ -406,23 +410,26 @@
         
         /* Editor */
         .editor-container {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
+            flex: 1; /* Key change for vertical expansion */
+            padding: 1rem; /* Reduced padding for more editor space */
+            overflow-y: hidden; /* Let #editor handle its own scroll */
             background: var(--white);
+            display: flex; 
+            flex-direction: column;
         }
         
         #editor {
-            min-height: 400px;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
+            flex: 1; /* Key change for vertical expansion */
+            width: 100%; /* Take full width of container */
+            max-width: none; /* Remove max-width constraint */
+            padding: 1.5rem; 
             background: var(--white);
             border: 1px solid var(--gray-light);
             border-radius: var(--radius);
             outline: none;
             font-size: 1.125rem;
             line-height: 1.8;
+            overflow-y: auto; /* Editor itself scrolls for long content */
             transition: var(--transition);
         }
         
@@ -769,16 +776,18 @@
             .main-container {
                 padding: 1rem;
                 margin: 1rem auto;
+                /* height: calc(100vh - 80px); Adjust based on header height */
             }
             
             .app-container {
-                height: calc(100vh - 140px);
+                /* height: calc(100vh - 140px); Remove explicit height, let flex handle */
+                flex-direction: column; /* Stack sidebar and main content on mobile if sidebar is overlay */
             }
             
             .sidebar {
                 position: fixed;
                 top: 0;
-                right: -320px;
+                right: -320px; /* Start off-screen */
                 height: 100vh;
                 z-index: 200;
                 transition: right 0.3s ease;
@@ -818,7 +827,7 @@
         }
         
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-dark);
+            background: var(--dark); /* Darkened scrollbar thumb on hover */
         }
         
         /* Loading Spinner */
@@ -934,7 +943,7 @@
                                 <option value="'Times New Roman', serif">Times</option>
                                 <option value="'Courier New', monospace">Courier</option>
                                 <option value="'David Libre', serif">David Libre</option>
-                                <option value="'Noto Sans Hebrew', sans-serif">Noto Sans</option>
+                                <option value="'Noto Sans Hebrew', sans-serif" selected>Noto Sans</option>
                                 <option value="Arial, sans-serif">Arial</option>
                             </select>
                         </div>
@@ -1075,7 +1084,7 @@
             if (notes.length > 0) {
                 loadNote(notes[0].id);
             } else {
-                showEmptyState();
+                showEmptyStateEditor(); // Show empty state in editor area too if no notes
             }
         });
         
@@ -1097,44 +1106,53 @@
             
             // Auto-save
             noteTitle.addEventListener('input', () => autoSave());
-            editor.addEventListener('input', () => autoSave());
+            editor.addEventListener('input', () => {
+                autoSave();
+                updateEditorActiveStates(); // Update toolbar based on cursor position
+            });
+            editor.addEventListener('click', updateEditorActiveStates);
+            editor.addEventListener('keyup', updateEditorActiveStates);
+
             
             // Toolbar - Text formatting
-            document.getElementById('boldBtn').addEventListener('click', () => formatText('bold'));
-            document.getElementById('italicBtn').addEventListener('click', () => formatText('italic'));
-            document.getElementById('underlineBtn').addEventListener('click', () => formatText('underline'));
-            document.getElementById('strikeBtn').addEventListener('click', () => formatText('strikeThrough'));
+            document.getElementById('boldBtn').addEventListener('click', () => { formatText('bold'); updateEditorActiveStates(); });
+            document.getElementById('italicBtn').addEventListener('click', () => { formatText('italic'); updateEditorActiveStates(); });
+            document.getElementById('underlineBtn').addEventListener('click', () => { formatText('underline'); updateEditorActiveStates(); });
+            document.getElementById('strikeBtn').addEventListener('click', () => { formatText('strikeThrough'); updateEditorActiveStates(); });
             
             // Headings
-            document.getElementById('h1Btn').addEventListener('click', () => formatHeading('h1'));
-            document.getElementById('h2Btn').addEventListener('click', () => formatHeading('h2'));
-            document.getElementById('h3Btn').addEventListener('click', () => formatHeading('h3'));
+            document.getElementById('h1Btn').addEventListener('click', () => { formatHeading('h1'); updateEditorActiveStates(); });
+            document.getElementById('h2Btn').addEventListener('click', () => { formatHeading('h2'); updateEditorActiveStates(); });
+            document.getElementById('h3Btn').addEventListener('click', () => { formatHeading('h3'); updateEditorActiveStates(); });
             
             // Lists
-            document.getElementById('ulBtn').addEventListener('click', () => formatText('insertUnorderedList'));
-            document.getElementById('olBtn').addEventListener('click', () => formatText('insertOrderedList'));
-            document.getElementById('quoteBtn').addEventListener('click', () => formatQuote());
+            document.getElementById('ulBtn').addEventListener('click', () => { formatText('insertUnorderedList'); updateEditorActiveStates(); });
+            document.getElementById('olBtn').addEventListener('click', () => { formatText('insertOrderedList'); updateEditorActiveStates(); });
+            document.getElementById('quoteBtn').addEventListener('click', () => { formatQuote(); updateEditorActiveStates(); });
             
             // Alignment
-            document.getElementById('alignRightBtn').addEventListener('click', () => formatText('justifyRight'));
-            document.getElementById('alignCenterBtn').addEventListener('click', () => formatText('justifyCenter'));
-            document.getElementById('alignLeftBtn').addEventListener('click', () => formatText('justifyLeft'));
+            document.getElementById('alignRightBtn').addEventListener('click', () => { formatText('justifyRight'); updateEditorActiveStates(); });
+            document.getElementById('alignCenterBtn').addEventListener('click', () => { formatText('justifyCenter'); updateEditorActiveStates(); });
+            document.getElementById('alignLeftBtn').addEventListener('click', () => { formatText('justifyLeft'); updateEditorActiveStates(); });
             
             // Font
             document.getElementById('fontFamily').addEventListener('change', (e) => {
                 formatText('fontName', e.target.value);
+                updateEditorActiveStates();
             });
             
-            document.getElementById('fontSizeUp').addEventListener('click', () => changeFontSize(1));
-            document.getElementById('fontSizeDown').addEventListener('click', () => changeFontSize(-1));
+            document.getElementById('fontSizeUp').addEventListener('click', () => { changeFontSize(1); updateEditorActiveStates(); });
+            document.getElementById('fontSizeDown').addEventListener('click', () => { changeFontSize(-1); updateEditorActiveStates(); });
             
             // Colors
             document.getElementById('textColor').addEventListener('input', (e) => {
                 formatText('foreColor', e.target.value);
+                updateEditorActiveStates();
             });
             
             document.getElementById('bgColor').addEventListener('input', (e) => {
-                formatText('hiliteColor', e.target.value);
+                formatText('hiliteColor', e.target.value); // hiliteColor or backColor, hilite is more common
+                updateEditorActiveStates();
             });
             
             // Links & Images
@@ -1143,14 +1161,37 @@
             imageInput.addEventListener('change', handleImageUpload);
             
             // Undo/Redo
-            document.getElementById('undoBtn').addEventListener('click', () => document.execCommand('undo'));
-            document.getElementById('redoBtn').addEventListener('click', () => document.execCommand('redo'));
+            document.getElementById('undoBtn').addEventListener('click', () => { document.execCommand('undo'); updateEditorActiveStates(); });
+            document.getElementById('redoBtn').addEventListener('click', () => { document.execCommand('redo'); updateEditorActiveStates(); });
             
             // Mobile menu
             mobileMenuBtn.addEventListener('click', toggleSidebar);
             
             // Keyboard shortcuts
             document.addEventListener('keydown', handleKeyboardShortcuts);
+        }
+
+        function updateEditorActiveStates() {
+            const commands = ['bold', 'italic', 'underline', 'strikeThrough', 'insertUnorderedList', 'insertOrderedList', 'justifyRight', 'justifyCenter', 'justifyLeft'];
+            commands.forEach(cmd => {
+                const btnId = cmd.toLowerCase().includes('justify') ? 
+                                cmd.replace('justify', 'align').replace('unorderedlist', 'ul').replace('orderedlist', 'ol') + 'Btn' :
+                                cmd.replace('insertUnorderedList', 'ulBtn').replace('insertOrderedList', 'olBtn') + 'Btn';
+
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    if (document.queryCommandState(cmd)) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+            // Font family
+            const fontName = document.queryCommandValue('fontName');
+            if (fontName) {
+                document.getElementById('fontFamily').value = fontName.replace(/['"]/g, ''); // Remove quotes for matching
+            }
         }
         
         // Create new note
@@ -1164,30 +1205,33 @@
             };
             
             notes.unshift(newNote);
-            currentNoteId = newNote.id;
-            noteTitle.value = '';
-            editor.innerHTML = '';
-            
-            saveToLocalStorage();
-            renderNoteList(notes);
+            saveToLocalStorage(); // Save first
+            loadNote(newNote.id); // Then load, which will render list and update editor
+
             noteTitle.focus();
-            
             showToast('נייַע נאָטיץ געשאַפֿן! ✨', 'success');
+            hideEmptyStateEditor();
         }
         
         // Load note
         function loadNote(noteId) {
             const note = notes.find(n => n.id === noteId);
-            if (!note) return;
+            if (!note) {
+                if (notes.length === 0) showEmptyStateEditor(); // No notes at all
+                return;
+            }
             
             currentNoteId = noteId;
             noteTitle.value = note.title;
             editor.innerHTML = note.content;
             
-            renderNoteList(notes);
+            renderNoteList(notes); // This will set the active class
+            updateStats();
+            updateEditorActiveStates();
+            hideEmptyStateEditor();
             
             // Close sidebar on mobile
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('show')) {
                 sidebar.classList.remove('show');
             }
         }
@@ -1195,23 +1239,29 @@
         // Save note
         function saveNote() {
             if (!currentNoteId) {
-                createNewNote();
+                // If there's content but no ID, it's a new note being typed
+                if (noteTitle.value.trim() || editor.innerHTML.trim()) {
+                    createNewNote(); // This will create, save, and load
+                    // Content is already in editor, title in input, it will be picked up by the new save in createNewNote
+                }
                 return;
             }
             
             const noteIndex = notes.findIndex(n => n.id === currentNoteId);
-            if (noteIndex === -1) return;
+            if (noteIndex === -1) return; // Should not happen if currentNoteId is set
             
             notes[noteIndex].title = noteTitle.value;
             notes[noteIndex].content = editor.innerHTML;
             notes[noteIndex].updatedAt = new Date().toISOString();
             
-            // Move to top
-            const note = notes.splice(noteIndex, 1)[0];
-            notes.unshift(note);
+            // Move to top if not already there
+            if (noteIndex > 0) {
+                const note = notes.splice(noteIndex, 1)[0];
+                notes.unshift(note);
+            }
             
             saveToLocalStorage();
-            renderNoteList(notes);
+            renderNoteList(notes); // Re-render to reflect potential order change and updated date
             updateStats();
             
             showToast('נאָטיץ געהיט! ✅', 'success');
@@ -1219,17 +1269,21 @@
         
         // Auto-save
         function autoSave() {
-            if (!currentNoteId) return;
-            
             clearTimeout(autoSaveTimer);
             autoSaveTimer = setTimeout(() => {
-                saveNote();
-            }, 1000);
+                if (currentNoteId || noteTitle.value.trim() || editor.innerHTML.trim()) {
+                     // Only save if there's a current note or new content being typed
+                    saveNote();
+                }
+            }, 1500); // Increased delay slightly
         }
         
         // Delete note
         function openDeleteModal() {
-            if (!currentNoteId) return;
+            if (!currentNoteId) {
+                showToast('קיין נאָטיץ אויסגעקליבן אויסצומעקן.', 'warning');
+                return;
+            }
             deleteModal.classList.add('show');
         }
         
@@ -1243,32 +1297,32 @@
             notes = notes.filter(n => n.id !== currentNoteId);
             saveToLocalStorage();
             
+            currentNoteId = null; // Reset current note
             if (notes.length > 0) {
-                loadNote(notes[0].id);
+                loadNote(notes[0].id); // Load the new first note
             } else {
-                currentNoteId = null;
                 noteTitle.value = '';
                 editor.innerHTML = '';
-                showEmptyState();
+                renderNoteList(notes); // Will show empty state in list
+                showEmptyStateEditor(); // Show empty state in editor
+                updateStats();
             }
             
-            renderNoteList(notes);
-            updateStats();
             closeDeleteModal();
-            
             showToast('נאָטיץ אויסגעמעקט! 🗑️', 'success');
         }
         
         // Search notes
         function searchNotes(query) {
-            if (!query.trim()) {
+            const trimmedQuery = query.trim().toLowerCase();
+            if (!trimmedQuery) {
                 renderNoteList(notes);
                 return;
             }
             
             const filtered = notes.filter(note => {
-                const titleMatch = note.title.toLowerCase().includes(query.toLowerCase());
-                const contentMatch = stripHtml(note.content).toLowerCase().includes(query.toLowerCase());
+                const titleMatch = note.title.toLowerCase().includes(trimmedQuery);
+                const contentMatch = stripHtml(note.content).toLowerCase().includes(trimmedQuery);
                 return titleMatch || contentMatch;
             });
             
@@ -1279,13 +1333,17 @@
         function renderNoteList(notesToRender) {
             noteList.innerHTML = '';
             
-            if (notesToRender.length === 0) {
-                if (notes.length === 0) {
-                    showEmptyState();
-                } else {
-                    noteList.innerHTML = '<li class="empty-state"><p>קיין נאָטיצן געפֿונען</p></li>';
-                }
+            if (notesToRender.length === 0 && notes.length === 0) { // Only show full empty state if no notes exist at all
+                noteList.innerHTML = `
+                    <li class="empty-state" style="padding: 1rem;">
+                        <div class="empty-state-icon" style="font-size: 2rem;">📝</div>
+                        <h3 style="font-size: 1.2rem;">נאָך קיין נאָטיצן</h3>
+                        <p style="font-size: 0.9rem;">דריק "נייַע נאָטיץ"</p>
+                    </li>`;
                 return;
+            } else if (notesToRender.length === 0 && notes.length > 0) { // No results from search
+                 noteList.innerHTML = '<li class="empty-state" style="padding: 1rem;"><p>קיין נאָטיצן געפֿונען פֿאַר דיין זוך</p></li>';
+                 return;
             }
             
             notesToRender.forEach(note => {
@@ -1320,18 +1378,39 @@
             });
         }
         
-        // Show empty state
-        function showEmptyState() {
-            const emptyState = `
-                <div class="empty-state">
+        // Show empty state in editor area
+        function showEmptyStateEditor() {
+            // Hide editor, toolbar, title, bottom actions, show a message
+            document.querySelector('.editor-header').style.display = 'none';
+            document.querySelector('.toolbar').style.display = 'none';
+            document.querySelector('.editor-container').style.display = 'none';
+            document.querySelector('.bottom-actions').style.display = 'none';
+
+            let emptyEditorMessage = document.getElementById('emptyEditorMessage');
+            if (!emptyEditorMessage) {
+                emptyEditorMessage = document.createElement('div');
+                emptyEditorMessage.id = 'emptyEditorMessage';
+                emptyEditorMessage.className = 'empty-state';
+                emptyEditorMessage.style.cssText = 'flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;';
+                emptyEditorMessage.innerHTML = `
                     <div class="empty-state-icon">📝</div>
-                    <h3>נאָך קיין נאָטיצן</h3>
-                    <p>דריק "נייַע נאָטיץ" צו אָנהייבן שרייבן</p>
-                </div>
-            `;
-            
-            if (noteList.children.length === 0) {
-                noteList.innerHTML = emptyState;
+                    <h3>וואַרט אויף דיין געדאַנקען...</h3>
+                    <p>שאַפֿט אַ נייַע נאָטיץ אָדער קלויבט אויס איינס פון דער ליסטע.</p>
+                `;
+                document.querySelector('.main-content').appendChild(emptyEditorMessage);
+            }
+            emptyEditorMessage.style.display = 'flex';
+        }
+
+        function hideEmptyStateEditor() {
+            document.querySelector('.editor-header').style.display = '';
+            document.querySelector('.toolbar').style.display = '';
+            document.querySelector('.editor-container').style.display = 'flex'; // it's a flex container
+            document.querySelector('.bottom-actions').style.display = 'flex';
+
+            const emptyEditorMessage = document.getElementById('emptyEditorMessage');
+            if (emptyEditorMessage) {
+                emptyEditorMessage.style.display = 'none';
             }
         }
         
@@ -1342,120 +1421,51 @@
         }
         
         function formatHeading(tag) {
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            
-            const heading = document.createElement(tag);
-            heading.textContent = selectedText || 'קאָפּצייל';
-            
-            range.deleteContents();
-            range.insertNode(heading);
-            
-            // Move cursor after heading
-            range.setStartAfter(heading);
-            range.collapse(true);
-            selection.removeAllRanges();
-            selection.addRange(range);
+            document.execCommand('formatBlock', false, tag);
+            editor.focus();
         }
         
         function formatQuote() {
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            
-            const blockquote = document.createElement('blockquote');
-            blockquote.textContent = selectedText || 'ציטאַט';
-            
-            range.deleteContents();
-            range.insertNode(blockquote);
+            document.execCommand('formatBlock', false, 'blockquote');
+            editor.focus();
         }
         
         function changeFontSize(direction) {
-            const sizes = ['1', '2', '3', '4', '5', '6', '7'];
-            let currentSize = '3';
-            
-            // Try to get current font size
-            const selection = window.getSelection();
-            if (selection.rangeCount > 0) {
-                const parent = selection.getRangeAt(0).commonAncestorContainer.parentElement;
-                const computedSize = window.getComputedStyle(parent).fontSize;
-                // Convert to relative size (approximate)
-                if (computedSize) {
-                    const px = parseInt(computedSize);
-                    if (px <= 10) currentSize = '1';
-                    else if (px <= 13) currentSize = '2';
-                    else if (px <= 16) currentSize = '3';
-                    else if (px <= 18) currentSize = '4';
-                    else if (px <= 24) currentSize = '5';
-                    else if (px <= 32) currentSize = '6';
-                    else currentSize = '7';
-                }
-            }
-            
-            let newIndex = sizes.indexOf(currentSize) + direction;
-            newIndex = Math.max(0, Math.min(sizes.length - 1, newIndex));
-            
-            formatText('fontSize', sizes[newIndex]);
+            const currentSize = document.queryCommandValue('fontSize') || '3'; // Default to '3' (normal)
+            let newSize = parseInt(currentSize) + direction;
+            newSize = Math.max(1, Math.min(7, newSize)); // Clamp between 1 and 7
+            formatText('fontSize', newSize.toString());
         }
         
         // Link insertion
         function insertLink() {
-            const url = prompt('שרייב אַרייַן דעם לינק:');
+            const url = prompt('שרייב אַרייַן דעם לינק URL:', 'https://');
             if (!url) return;
-            
-            const selection = window.getSelection();
-            const range = selection.getRangeAt(0);
-            const selectedText = range.toString();
-            
-            if (selectedText) {
-                formatText('createLink', url);
-            } else {
-                const link = document.createElement('a');
-                link.href = url;
-                link.textContent = url;
-                link.target = '_blank';
-                
-                range.insertNode(link);
-                range.setStartAfter(link);
-                range.collapse(true);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            }
+            formatText('createLink', url);
         }
         
         // Image handling
         function handleImageUpload(e) {
             const file = e.target.files[0];
             if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                showToast('ביטע קלויב אויס אַ בילד טעקע.', 'warning');
+                return;
+            }
             
             const reader = new FileReader();
             reader.onload = (event) => {
                 currentImageURL = event.target.result;
-                
-                // Get image dimensions
                 const img = new Image();
                 img.onload = () => {
-                    const maxWidth = 600;
-                    let width = img.width;
-                    let height = img.height;
-                    
-                    if (width > maxWidth) {
-                        const ratio = maxWidth / width;
-                        width = maxWidth;
-                        height = Math.round(height * ratio);
-                    }
-                    
-                    document.getElementById('imgWidth').value = width;
-                    document.getElementById('imgHeight').value = height;
-                    
+                    document.getElementById('imgWidth').value = Math.min(img.width, 600); // Default width
+                    document.getElementById('imgHeight').value = Math.min(img.height, img.height * (Math.min(img.width, 600) / img.width)); // Proportional height
                     imageModal.classList.add('show');
                 };
                 img.src = currentImageURL;
             };
             reader.readAsDataURL(file);
-            
-            e.target.value = '';
+            e.target.value = ''; // Reset file input
         }
         
         function closeImageModal() {
@@ -1466,83 +1476,176 @@
         function insertImage() {
             if (!currentImageURL) return;
             
-            const img = document.createElement('img');
-            img.src = currentImageURL;
-            img.width = document.getElementById('imgWidth').value;
-            img.height = document.getElementById('imgHeight').value;
-            img.className = document.getElementById('imgPosition').value;
+            const imgElement = document.createElement('img');
+            imgElement.src = currentImageURL;
+            const width = document.getElementById('imgWidth').value;
+            const height = document.getElementById('imgHeight').value;
+            if (width) imgElement.style.width = `${width}px`;
+            if (height) imgElement.style.height = `${height}px`;
+            imgElement.className = document.getElementById('imgPosition').value; // Class for alignment
             
+            editor.focus(); // Ensure editor has focus before inserting
             const selection = window.getSelection();
             if (selection.rangeCount > 0) {
                 const range = selection.getRangeAt(0);
-                range.deleteContents();
-                range.insertNode(img);
+                range.deleteContents(); // Remove selected text if any
+                range.insertNode(imgElement);
                 
-                // Add line break after image
-                const br = document.createElement('br');
-                range.setStartAfter(img);
-                range.insertNode(br);
-                range.setStartAfter(br);
+                // Add a new paragraph after the image for easier typing
+                const p = document.createElement('p');
+                const br = document.createElement('br'); // Some browsers need <br> in empty <p> to show cursor
+                p.appendChild(br);
+                range.setStartAfter(imgElement);
                 range.collapse(true);
+                range.insertNode(p);
+                
+                // Move cursor into the new paragraph
+                range.selectNodeContents(p);
+                range.collapse(false); // false to collapse to end of paragraph
                 selection.removeAllRanges();
                 selection.addRange(range);
-            } else {
-                editor.appendChild(img);
-                editor.appendChild(document.createElement('br'));
+
+            } else { // Fallback if no selection
+                editor.appendChild(imgElement);
+                editor.appendChild(document.createElement('p')).appendChild(document.createElement('br')); // Add new para after
             }
             
             closeImageModal();
-            editor.focus();
             autoSave();
         }
         
         // Export to PDF
         function exportToPDF() {
-            const element = document.createElement('div');
-            element.style.padding = '40px';
-            element.style.fontFamily = 'Arial, sans-serif';
-            element.style.direction = 'rtl';
-            element.style.backgroundColor = 'white';
+            if (!currentNoteId && !editor.innerHTML.trim()) {
+                showToast('קיין אינהאַלט צו עקספּאָרטירן.', 'warning');
+                return;
+            }
+
+            const noteContentHTML = editor.innerHTML;
+            const noteTitleText = noteTitle.value || 'אָן נאָמען';
+
+            const pdfContainer = document.createElement('div');
+            pdfContainer.setAttribute('dir', 'rtl');
+            pdfContainer.style.width = '210mm'; // A4 width
+            pdfContainer.style.padding = '15mm'; // Margins for content
+            pdfContainer.style.boxSizing = 'border-box';
+            pdfContainer.style.overflow = 'hidden'; // Prevent scrollbars in PDF capture
+
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&family=David+Libre:wght@400;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap');
+                body { /* html2pdf wraps content in a body */
+                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif;
+                    direction: rtl;
+                    text-align: right;
+                    line-height: 1.6;
+                    color: #333333; /* var(--dark) approx */
+                    margin: 0;
+                    padding: 0;
+                }
+                h1, h2, h3, h4, h5, h6 {
+                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif;
+                    color: #2d3748; /* var(--dark) */
+                    margin-top: 1.5em; margin-bottom: 0.75em;
+                }
+                h1 { font-size: 2em; }
+                h2 { font-size: 1.5em; }
+                h3 { font-size: 1.17em; }
+                p { margin: 1em 0; }
+                ul, ol {
+                    padding-right: 2rem; 
+                    margin-right: 1rem; 
+                    margin-top: 1em; margin-bottom: 1em;
+                }
+                li { margin: 0.5em 0; }
+                blockquote {
+                    border-right: 4px solid #667eea; /* var(--primary) */
+                    padding-right: 1rem;
+                    margin: 1em 1rem 1em 0;
+                    color: #718096; /* var(--gray) */
+                    font-style: italic;
+                }
+                a {
+                    color: #667eea; /* var(--primary) */
+                    text-decoration: none;
+                }
+                a:hover { text-decoration: underline; }
+                img {
+                    max-width: 100% !important; /* Important to override inline styles if too large */
+                    height: auto !important;
+                    border-radius: 0.5rem; 
+                    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
+                    margin: 1rem 0;
+                    display: block; /* Default for images unless class changes it */
+                }
+                img.img-left { float: right !important; margin: 0 0 1rem 1rem !important; max-width: 40% !important; }
+                img.img-right { float: left !important; margin: 0 1rem 1rem 0 !important; max-width: 40% !important; }
+                img.img-center { display: block !important; margin: 1rem auto !important; max-width: 80% !important; }
+
+                .pdf-title {
+                    font-size: 2.2em;
+                    text-align: center;
+                    margin-bottom: 20px;
+                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif;
+                }
+                .pdf-date {
+                    font-size: 0.9em;
+                    text-align: center;
+                    color: #666666;
+                    margin-bottom: 30px;
+                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif;
+                }
+            `;
+            pdfContainer.appendChild(style);
+
+            const titleEl = document.createElement('h1');
+            titleEl.className = 'pdf-title';
+            titleEl.textContent = noteTitleText;
+            pdfContainer.appendChild(titleEl);
+
+            const dateEl = document.createElement('p');
+            dateEl.className = 'pdf-date';
+            dateEl.textContent = `דאטום: ${new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            pdfContainer.appendChild(dateEl);
+
+            const contentEl = document.createElement('div');
+            contentEl.innerHTML = noteContentHTML;
+            pdfContainer.appendChild(contentEl);
             
-            const title = document.createElement('h1');
-            title.textContent = noteTitle.value || 'אָן נאָמען';
-            title.style.marginBottom = '30px';
-            title.style.textAlign = 'center';
-            title.style.color = '#333';
-            
-            const date = document.createElement('p');
-            date.textContent = new Date().toLocaleDateString('he-IL');
-            date.style.textAlign = 'center';
-            date.style.color = '#666';
-            date.style.marginBottom = '30px';
-            
-            const content = document.createElement('div');
-            content.innerHTML = editor.innerHTML;
-            content.style.lineHeight = '1.8';
-            
-            element.appendChild(title);
-            element.appendChild(date);
-            element.appendChild(content);
-            
+            // Temporarily append to DOM for html2canvas to calculate styles correctly
+            pdfContainer.style.position = 'fixed';
+            pdfContainer.style.left = '-10000px'; // Way off-screen
+            pdfContainer.style.opacity = '0';   // Invisible
+            document.body.appendChild(pdfContainer);
+
             const opt = {
-                margin: 1,
-                filename: `${noteTitle.value || 'נאָטיץ'}_${new Date().toLocaleDateString('he-IL')}.pdf`,
+                margin: 0, // Margins handled by pdfContainer's padding
+                filename: `${noteTitleText.replace(/[<>:"/\\|?* .]+/g, '_') || 'נאָטיץ'}_${new Date().toISOString().slice(0,10)}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2,
-                    useCORS: true,
-                    letterRendering: true
+                html2canvas: {
+                    scale: 2, // Higher scale for better quality
+                    useCORS: true, // For external images/fonts
+                    letterRendering: true, // Better text rendering
+                    // Allow html2canvas to determine width/height based on the element
+                    // It's important that pdfContainer is in the DOM for this
                 },
-                jsPDF: { 
-                    unit: 'in', 
-                    format: 'letter', 
+                jsPDF: {
+                    unit: 'mm', // Use millimeters for A4
+                    format: 'a4',
                     orientation: 'portrait',
                     compress: true
-                }
+                },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } // Standard page break modes
             };
-            
-            html2pdf().set(opt).from(element).save();
-            showToast('PDF דאַונלאָוד געשטאַרט! 📄', 'success');
+
+            html2pdf().from(pdfContainer).set(opt).save().then(() => {
+                showToast('PDF דאַונלאָוד געשטאַרט! 📄', 'success');
+            }).catch(err => {
+                console.error("PDF Export Error:", err);
+                showToast('PDF עקספּאָרט טעות! ❌', 'error');
+            }).finally(() => {
+                document.body.removeChild(pdfContainer); // Clean up the temporary element
+            });
         }
         
         // Utility functions
@@ -1559,30 +1662,32 @@
         
         function getWordCount(content) {
             const text = stripHtml(content);
+            if (!text.trim()) return 0;
             return text.split(/\s+/).filter(word => word.length > 0).length;
         }
         
         function formatDate(dateString) {
             const date = new Date(dateString);
             const now = new Date();
-            const diff = now - date;
+            const diffSeconds = Math.floor((now - date) / 1000);
+
+            if (diffSeconds < 60) return 'איצט';
+            const diffMinutes = Math.floor(diffSeconds / 60);
+            if (diffMinutes < 60) return `פֿאַר ${diffMinutes} מינוט`;
+            const diffHours = Math.floor(diffMinutes / 60);
+            if (diffHours < 24) return `פֿאַר ${diffHours} שעה`;
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffDays < 7) return `פֿאַר ${diffDays} טעג`;
             
-            if (diff < 60000) return 'איצט';
-            if (diff < 3600000) return `פֿאַר ${Math.floor(diff / 60000)} מינוט`;
-            if (diff < 86400000) return `פֿאַר ${Math.floor(diff / 3600000)} שעה`;
-            if (diff < 604800000) return `פֿאַר ${Math.floor(diff / 86400000)} טעג`;
-            
-            return date.toLocaleDateString('he-IL');
+            return date.toLocaleDateString('he-IL'); // e.g., 13.6.2024
         }
         
         function updateStats() {
             totalNotesEl.textContent = notes.length;
-            
             let totalWords = 0;
             notes.forEach(note => {
                 totalWords += getWordCount(note.content);
             });
-            
             totalWordsEl.textContent = totalWords;
         }
         
@@ -1594,9 +1699,9 @@
                 info: 'ℹ️'
             };
             
-            toastIcon.textContent = icons[type];
+            toastIcon.textContent = icons[type] || 'ℹ️';
             toastMessage.textContent = message;
-            toast.className = `toast ${type}`;
+            toast.className = `toast ${type}`; // Ensure only one type class
             toast.classList.add('show');
             
             setTimeout(() => {
@@ -1610,12 +1715,13 @@
         
         function toggleSidebar() {
             sidebar.classList.toggle('show');
+            mobileMenuBtn.textContent = sidebar.classList.contains('show') ? '✕' : '☰';
         }
         
         // Keyboard shortcuts
         function handleKeyboardShortcuts(e) {
-            if (e.ctrlKey || e.metaKey) {
-                switch(e.key) {
+            if (e.ctrlKey || e.metaKey) { // Meta key for Mac
+                switch(e.key.toLowerCase()) { // Use toLowerCase for key matching
                     case 's':
                         e.preventDefault();
                         saveNote();
@@ -1626,29 +1732,39 @@
                         break;
                     case 'b':
                         e.preventDefault();
-                        formatText('bold');
+                        formatText('bold'); updateEditorActiveStates();
                         break;
                     case 'i':
                         e.preventDefault();
-                        formatText('italic');
+                        formatText('italic'); updateEditorActiveStates();
                         break;
                     case 'u':
                         e.preventDefault();
-                        formatText('underline');
+                        formatText('underline'); updateEditorActiveStates();
                         break;
                     case '/':
-                        e.preventDefault();
-                        searchBox.focus();
+                        if (document.activeElement !== searchBox) {
+                            e.preventDefault();
+                            searchBox.focus();
+                        }
                         break;
                 }
             }
         }
         
         // Save before unload
-        window.addEventListener('beforeunload', () => {
+        window.addEventListener('beforeunload', (e) => {
+            // Standard way to prompt user, though browser support varies
             if (currentNoteId && (noteTitle.value || editor.innerHTML)) {
-                saveNote();
+                // Check if current note content differs from stored one
+                const note = notes.find(n => n.id === currentNoteId);
+                if (note && (note.title !== noteTitle.value || note.content !== editor.innerHTML)) {
+                   saveNote(); // Auto-save one last time
+                   // Browsers might still show a generic "changes you made may not be saved"
+                   // e.returnValue = 'Are you sure you want to leave? Changes might not be saved.';
+                }
             }
         });
     </script>
 </body>
+</html>
