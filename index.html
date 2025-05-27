@@ -1025,13 +1025,175 @@
             notes.forEach(note => { totalWords += getWordCount(note.content); });
             totalWordsEl.textContent = totalWords;
         }
-        function showToast(message, type = 'success') {
+                function showToast(message, type = 'success', duration = 3000) { // Added duration parameter
             const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
             toastIcon.textContent = icons[type] || 'ℹ️';
             toastMessage.textContent = message;
-            toast.className = 'toast'; // Reset classes
-            toast.classList.add(type, 'show'); // Add new type and show
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            toast.className = 'toast'; 
+            toast.classList.add(type, 'show'); 
+            setTimeout(() => { toast.classList.remove('show'); }, duration);
+        }
+
+        async function exportToPDF() {
+            if (!currentNoteId && !editor.innerHTML.trim()) {
+                showToast('קיין אינהאַלט צו עקספּאָרטירן.', 'warning');
+                return;
+            }
+            
+            showToast('גענערירן PDF... ביטע ווארט. דאָס קען דויערן אַ וויילע...', 'info', 6000);
+
+            const noteContentHTML = editor.innerHTML;
+            const noteTitleText = noteTitle.value || 'אָן נאָמען';
+
+            // 1. Create a dedicated element for PDF generation
+            const pdfElement = document.createElement('div');
+            pdfElement.setAttribute('id', 'pdfContentContainer'); // Add ID for easier debugging
+            pdfElement.style.direction = 'rtl';
+            pdfElement.style.fontFamily = "'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif";
+            pdfElement.style.textAlign = 'right';
+            pdfElement.style.lineHeight = '1.6';
+            pdfElement.style.color = '#333333';
+            pdfElement.style.width = '180mm'; // A4 width minus margins (210mm - 15mm - 15mm)
+            pdfElement.style.padding = '10mm'; // Internal padding
+            pdfElement.style.margin = '0 auto'; // Center if rendered visible
+            pdfElement.style.backgroundColor = 'white'; // Ensure background is white
+            pdfElement.style.wordWrap = 'break-word'; // Ensure long words break
+
+            // 2. Add global styles directly
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = `
+                @font-face {
+                    font-family: 'Rubik';
+                    src: url('https://fonts.gstatic.com/s/rubik/v28/iJWKBXyIfDnIV7nMrXyi0A.woff2') format('woff2'); /* Example, ensure correct paths if self-hosting */
+                }
+                @font-face {
+                    font-family: 'Noto Sans Hebrew';
+                    src: url('https://fonts.gstatic.com/s/notosanshebrew/v31/or30Q7vN1_2_kAoN1IBzerR2s5tdY2A.woff2') format('woff2');
+                }
+                 @font-face {
+                    font-family: 'David Libre';
+                    src: url('https://fonts.gstatic.com/s/davidlibre/v16/snfus0W_99NpgjH2qトゥエンティ-q_M-SDQ.woff2') format('woff2'); /* Corrected David Libre URL */
+                }
+                /* Ensure all elements within pdfElement inherit base styles */
+                #pdfContentContainer, #pdfContentContainer * {
+                    font-family: 'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif !important;
+                    direction: rtl !important;
+                    text-align: right !important;
+                    box-sizing: border-box !important; /* Critical for layout */
+                }
+                .pdf-title-render { font-size: 2.0em; text-align: center; margin-bottom: 15px; color: #2d3748; font-weight: bold; }
+                .pdf-date-render { font-size: 0.9em; text-align: center; color: #555555; margin-bottom: 25px; }
+                h1 { font-size: 1.8em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
+                h2 { font-size: 1.4em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
+                h3 { font-size: 1.15em; color: #2d3748; margin-top: 1.2em; margin-bottom: 0.6em; font-weight: bold; }
+                p { margin: 0.8em 0; }
+                ul, ol { padding-right: 20px; margin-right: 10px; margin-top: 0.8em; margin-bottom: 0.8em; }
+                li { margin: 0.4em 0; }
+                blockquote { border-right: 3px solid #667eea; padding-right: 10px; margin: 0.8em 10px 0.8em 0; color: #718096; font-style: italic; background-color: #f8f9fa; }
+                a { color: #667eea; text-decoration: none; } a:hover { text-decoration: underline; }
+                img { max-width: 100% !important; height: auto !important; border-radius: 4px; display: block; margin: 0.8em auto; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+                img.img-left { float: right !important; margin: 0 0 0.5em 0.5em !important; max-width: 40% !important; }
+                img.img-right { float: left !important; margin: 0 0.5em 0.5em 0 !important; max-width: 40% !important; }
+            `;
+            pdfElement.appendChild(styleElement);
+
+            // 3. Add title and date
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'pdf-title-render';
+            titleDiv.textContent = noteTitleText;
+            pdfElement.appendChild(titleDiv);
+
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'pdf-date-render';
+            dateDiv.textContent = `דאטום: ${new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+            pdfElement.appendChild(dateDiv);
+
+            // 4. Add content (cloned to avoid issues with live editor elements)
+            const contentDiv = document.createElement('div');
+            contentDiv.innerHTML = noteContentHTML; // This content already comes from the editor
+            
+            // Sanitize and prepare images within contentDiv
+            const images = Array.from(contentDiv.getElementsByTagName('img'));
+            const imagePromises = images.map(img => {
+                return new Promise((resolve, reject) => {
+                    if (img.complete && img.naturalHeight !== 0) { // Already loaded
+                        resolve();
+                    } else {
+                        // If src is a data URL, it should load quickly. If external, this helps.
+                        const newImg = new Image();
+                        newImg.onload = () => {
+                            // Replace original img src if it was relative or problematic
+                            // For simplicity, we assume DataURLs are fine or external URLs are accessible
+                            // This step is crucial if original images were not DataURLs
+                            if (img.src !== newImg.src && newImg.src.startsWith('data:')) {
+                                img.src = newImg.src;
+                            }
+                            resolve();
+                        };
+                        newImg.onerror = () => {
+                            console.warn('PDF Export: Image could not be loaded:', img.src);
+                            // img.style.display = 'none'; // Optionally hide broken images
+                            resolve(); // Resolve anyway to not block PDF generation
+                        };
+                        newImg.src = img.src; // Trigger load
+                    }
+                });
+            });
+
+            await Promise.all(imagePromises).catch(err => console.error("Error loading images for PDF:", err));
+            
+            pdfElement.appendChild(contentDiv);
+            
+            // 5. Temporarily append to body (hidden) for rendering
+            pdfElement.style.position = 'fixed';
+            pdfElement.style.left = '-10000px'; // Position off-screen
+            pdfElement.style.top = '-10000px';
+            pdfElement.style.opacity = '0'; // Make it invisible
+            document.body.appendChild(pdfElement);
+
+            console.log("Element to be converted to PDF:", pdfElement.outerHTML.substring(0, 5000) + "..."); // Log the HTML structure
+
+            const opt = {
+                margin: [10, 10, 10, 10], // Margins for jsPDF in mm (T,R,B,L)
+                filename: `${noteTitleText.replace(/[<>:"/\\|?* .]+/g, '_') || 'נאָטיץ'}_${new Date().toISOString().slice(0,10)}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 }, // Image settings for html2canvas
+                html2canvas: {
+                    scale: window.devicePixelRatio > 1 ? window.devicePixelRatio : 2, // Use device pixel ratio or default to 2 for sharpness
+                    useCORS: true, // For external images/fonts
+                    letterRendering: true, // Better text rendering
+                    logging: true, // Enable html2canvas logging
+                    scrollX: 0, // Ensure it captures from the top-left
+                    scrollY: 0,
+                    windowWidth: pdfElement.scrollWidth, // Use the actual width of the element
+                    windowHeight: pdfElement.scrollHeight, // Use the actual height of the element
+                    backgroundColor: null, // Transparent background for canvas, pdfElement defines actual bg
+                    onclone: (documentClone) => {
+                         // Re-apply direction on the cloned document's root for good measure
+                        documentClone.documentElement.setAttribute('dir', 'rtl');
+                        documentClone.documentElement.style.fontFamily = "'Rubik', 'Noto Sans Hebrew', 'David Libre', Arial, sans-serif";
+                    }
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait',
+                    compress: true
+                },
+                pagebreak: { mode: ['css', 'legacy'], avoid: ['img', 'blockquote', 'h1', 'h2', 'h3'] } // Try to avoid breaking these elements
+            };
+
+            try {
+                const pdf = await html2pdf().from(pdfElement).set(opt).save();
+                showToast('PDF דאַונלאָוד געשטאַרט! 📄', 'success');
+            } catch (error) {
+                console.error("PDF Export Error:", error);
+                showToast(`PDF עקספּאָרט טעות: ${error.message.substring(0,100)}... זע קאָנסאָל.`, 'error', 6000);
+            } finally {
+                // 6. Remove the temporary element
+                if (document.body.contains(pdfElement)) {
+                    document.body.removeChild(pdfElement);
+                }
+            }
         }
         function saveToLocalStorage() { localStorage.setItem('notes', JSON.stringify(notes)); }
         function toggleSidebar() { sidebar.classList.toggle('show'); mobileMenuBtn.textContent = sidebar.classList.contains('show') ? '✕' : '☰'; }
